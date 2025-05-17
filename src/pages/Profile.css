@@ -1,0 +1,54 @@
+/* src/components/Profile/Profile.css */
+
+.profile-wrapper {
+  padding: 40px 5%;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.profile-title {
+  font-size: 32px;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+.profile-text {
+  font-size: 16px;
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+.profile-card {
+  background-color: #fff7e6;
+  padding: 20px;
+  border: 1px solid #ffcc80;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* NEW styles for input fields and buttons */
+.profile-card input {
+  padding: 6px;
+  font-size: 14px;
+  margin-left: 8px;
+  width: 60%;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.profile-edit-button,
+.profile-save-button {
+  margin-top: 15px;
+  padding: 10px 20px;
+  background-color: #f5990b;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.profile-edit-button:hover,
+.profile-save-button:hover {
+  background-color: #e08800;
+}
