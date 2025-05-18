@@ -28,7 +28,7 @@ function App() {
       <div className='app-container'>
         <header className='header'>
           <Header />
-          <Navigation /> {/* Navigation component handles the nav links */}
+          <Navigation />
         </header>
 
         <main className='main-content'>

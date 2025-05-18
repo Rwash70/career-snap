@@ -17,6 +17,7 @@
 
 .search-form button {
   padding: 8px 16px;
+  margin-top: 1px;
   background-color: #f5990b;
   border: none;
   color: white;

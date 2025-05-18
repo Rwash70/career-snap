@@ -10,7 +10,7 @@ export default function Profile() {
     name: 'Jane Doe',
     email: 'JaneD@example.com',
     memberSince: '2024',
-    receiveEmails: false, // new toggle field
+    receiveEmails: false,
   });
 
   const [formData, setFormData] = useState({ ...profileData });
@@ -22,34 +22,32 @@ export default function Profile() {
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: type === 'checkbox' ? checked : value,
-    }));
+    if (type === 'radio') {
+      setFormData((prev) => ({
+        ...prev,
+        [name]: value === 'true', // convert string to boolean
+      }));
+    } else {
+      setFormData((prev) => ({
+        ...prev,
+        [name]: type === 'checkbox' ? checked : value,
+      }));
+    }
   };
 
   const handleSave = async () => {
     setLoading(true);
     setMessage('');
     try {
-      // Replace this URL with your actual backend API endpoint
-      const response = await fetch('https://your-backend-api.com/profile', {
-        method: 'POST', // or PUT depending on your API
-        headers: {
-          'Content-Type': 'application/json',
-          // Add authorization header if needed
-          // 'Authorization': `Bearer ${yourToken}`
-        },
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/profile`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),
       });
 
-      if (!response.ok) {
-        throw new Error('Failed to save profile');
-      }
+      if (!response.ok) throw new Error('Failed to save profile');
 
-      // Assume backend returns saved profile data
       const savedProfile = await response.json();
-
       setProfileData(savedProfile);
       setIsEditing(false);
       setMessage('Profile saved successfully!');
@@ -77,6 +75,7 @@ export default function Profile() {
                 onChange={handleChange}
               />
             </p>
+
             <p>
               <strong>Email:</strong>
               <input
@@ -86,26 +85,59 @@ export default function Profile() {
                 onChange={handleChange}
               />
             </p>
+
             <p>
-              <strong>Member since:</strong> {formData.memberSince}
+              <strong>Member since:</strong>
+              <input
+                type='text'
+                name='memberSince'
+                value={formData.memberSince}
+                onChange={handleChange}
+              />
             </p>
+
             <p>
+              <strong>Receive emails about remote jobs:</strong>
+            </p>
+            <div className='radio-group'>
               <label>
                 <input
-                  type='checkbox'
+                  type='radio'
                   name='receiveEmails'
-                  checked={formData.receiveEmails}
+                  value='true'
+                  checked={formData.receiveEmails === true}
                   onChange={handleChange}
-                />{' '}
-                Receive emails about remote jobs
+                />
+                Yes
               </label>
-            </p>
+              <label>
+                <input
+                  type='radio'
+                  name='receiveEmails'
+                  value='false'
+                  checked={formData.receiveEmails === false}
+                  onChange={handleChange}
+                />
+                No
+              </label>
+            </div>
+
             <button
               className='profile-save-button'
               onClick={handleSave}
               disabled={loading}
             >
               {loading ? 'Saving...' : 'Save'}
+            </button>
+            <button
+              className='profile-cancel-button'
+              onClick={() => {
+                setIsEditing(false);
+                setFormData(profileData); // Reset changes
+                setMessage('');
+              }}
+            >
+              Cancel
             </button>
           </>
         ) : (
