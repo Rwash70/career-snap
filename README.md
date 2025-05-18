@@ -1,19 +1,78 @@
-# React + Vite
+# Career Snap:
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Career Snap is a full-stack web application that helps users track their professional development, job applications, and career goals. The project leverages a modern frontend and a lightweight backend to provide a seamless and interactive experience.
 
-Currently, two official plugins are available:
+## Key Features:
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+-Frontend landing page served at (http://localhost:5173)
 
-## Expanding the ESLint configuration
+-Track job applications with status updates
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+-Filter and search job entries
 
-# Career Snap
+-Dashboard-style layout with user-friendly UI
 
-Career Snap is a responsive React web app designed to help users find, save, and manage job opportunities. It features user authentication, job searching, saved jobs tracking, and a user profile page with editable personal information and preferences.
+-Backend API using Express and MongoDB for secure data handling
+
+## Technical Stack:
+
+### Frontend
+
+- [React](https://reactjs.org/)
+- [Vite](https://vitejs.dev/)
+- HTML, CSS, JavaScript
+- React Router DOM
+
+### Backend
+
+- Node.js
+- Express.js
+- MongoDB with Mongoose
+
+### Development Tools
+
+- Axios
+- ESLint
+- dotenv
+- CORS
+- Nodemon
+
+## Backend API Overview
+
+**Base URL:** `http://localhost:5000/api`
+
+| Method | Endpoint    | Description              |
+| ------ | ----------- | ------------------------ |
+| GET    | `/jobs`     | Retrieve all job entries |
+| POST   | `/jobs`     | Create a new job entry   |
+| PUT    | `/jobs/:id` | Update a job entry       |
+| DELETE | `/jobs/:id` | Delete a job entry       |
+
+## Additional Tools & Libraries
+
+- **Axios** – for frontend-backend HTTP communication
+- **React Router** – for smooth page navigation
+- **Mongoose** – for MongoDB data modeling
+- **ESLint** – for maintaining clean, consistent code
+
+---
+
+## Why These Technologies?
+
+- **React + Vite**: Fast, responsive frontend development
+- **Express**: Simple and flexible API structure
+- **MongoDB**: NoSQL database ideal for job entries
+- **Vite**: Super fast dev server and modern tooling
+- **Axios**: Simplified request handling
+
+## Future Improvements
+
+- Add user authentication (JWT)
+- Connect to MongoDB Atlas
+- Add user-specific dashboards
+- Dark mode toggle
+- Notifications/reminders for application deadlines
+- Advanced filtering and sorting
 
 ## Live Demo
 
@@ -29,20 +88,7 @@ Career Snap is a responsive React web app designed to help users find, save, and
 - **Responsive Navigation:** Dynamic nav links with conditional enable/disable states.
 - **API Integration Ready:** Profile edits designed to connect with backend API for saving user data.
 
-## Tech Stack
-
-- **Frontend:** React, React Router DOM, CSS Modules
-- **Backend (planned):** Node.js/Express (for API endpoints)
-- **Third-party APIs:** NewsAPI (for news integration planned)
-- **Hosting:** [Your hosting service]
-
 ## Getting Started
-
-### Prerequisites
-
-- Node.js (v14 or above)
-- npm or yarn
-- API key from NewsAPI (optional, for news integration)
 
 ### Installation
 

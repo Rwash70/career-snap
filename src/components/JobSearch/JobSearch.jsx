@@ -1,9 +1,12 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
+import { FaBookmark, FaRegBookmark } from 'react-icons/fa'; // Import icons
 
-const JobSearch = () => {
+const JobSearch = ({ searchTerm, savedJobs = [], toggleSaveJob }) => {
   const [jobs, setJobs] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const jobsPerPage = 10;
+
+  const topRef = useRef(null); // ✅ ref for scrolling
 
   useEffect(() => {
     fetch('https://remoteok.com/api')
@@ -12,37 +15,77 @@ const JobSearch = () => {
       .catch((err) => console.error(err));
   }, []);
 
-  // Calculate current jobs to display
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [searchTerm]);
+
+  useEffect(() => {
+    // ✅ scroll to top when currentPage changes
+    if (topRef.current) {
+      topRef.current.scrollIntoView({ behavior: 'smooth' });
+    }
+  }, [currentPage]);
+
+  const filteredJobs = jobs.filter(
+    (job) =>
+      job.position?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      job.company?.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
   const indexOfLastJob = currentPage * jobsPerPage;
   const indexOfFirstJob = indexOfLastJob - jobsPerPage;
-  const currentJobs = jobs.slice(indexOfFirstJob, indexOfLastJob);
+  const currentJobs = filteredJobs.slice(indexOfFirstJob, indexOfLastJob);
+  const totalPages = Math.ceil(filteredJobs.length / jobsPerPage);
 
-  // Calculate total pages
-  const totalPages = Math.ceil(jobs.length / jobsPerPage);
+  const handlePageChange = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
 
-  // Handle page change
-  const handlePageChange = (pageNumber) => setCurrentPage(pageNumber);
+  const isJobSaved = (job) => savedJobs.some((saved) => saved.id === job.id);
 
   return (
-    <div className='job-list'>
-      <h1>Remote Jobs</h1>
-      {currentJobs.map((job) => (
-        <div key={job.id} className='job-card'>
-          <h2>{job.position}</h2>
-          <p>{job.company}</p>
-          <a href={job.url} target='_blank' rel='noopener noreferrer'>
-            View Job
-          </a>
-        </div>
-      ))}
-
-      {/* Pagination controls */}
+    <div className='job-search-container' ref={topRef}>
+      {' '}
+      {/* ✅ scroll ref here */}
+      <h1 className='job-search-title'>Remote Jobs</h1>
+      {currentJobs.length > 0 ? (
+        currentJobs.map((job) => (
+          <div key={job.id} className='job-card'>
+            <h2 className='job-card-title'>{job.position}</h2>
+            <p className='job-card-company'>{job.company}</p>
+            <a
+              href={job.url}
+              target='_blank'
+              rel='noopener noreferrer'
+              className='job-card-link'
+            >
+              View Job
+            </a>
+            <button
+              className={`job-card-save-icon-btn ${
+                isJobSaved(job) ? 'saved' : ''
+              }`}
+              onClick={() => toggleSaveJob(job)}
+              aria-label={isJobSaved(job) ? 'Unsave job' : 'Save job'}
+            >
+              {isJobSaved(job) ? (
+                <FaBookmark className='save-icon' />
+              ) : (
+                <FaRegBookmark className='save-icon' />
+              )}
+            </button>
+          </div>
+        ))
+      ) : (
+        <p className='no-jobs-message'>No jobs found.</p>
+      )}
       <div className='pagination'>
         {[...Array(totalPages)].map((_, i) => (
           <button
             key={i + 1}
             onClick={() => handlePageChange(i + 1)}
             disabled={currentPage === i + 1}
+            className='pagination-btn'
           >
             {i + 1}
           </button>

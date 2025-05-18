@@ -1,11 +1,18 @@
 import './SearchForm.css';
 
-function SearchForm() {
+function SearchForm({ searchTerm, setSearchTerm }) {
+  const handleSubmit = (e) => e.preventDefault(); // prevent reload
+
   return (
     <section className='search-form'>
-      <form>
-        <input type='text' placeholder='Search for jobs...' />
-        <button type='submit'>Search</button>
+      <form onSubmit={handleSubmit}>
+        <input
+          type='text'
+          placeholder='Search for jobs...'
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          className='search-input'
+        />
       </form>
     </section>
   );
