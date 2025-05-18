@@ -24,7 +24,12 @@ app.options(
 // Parse JSON bodies
 app.use(express.json());
 
-// MongoDB connection string (replace placeholders as needed)
+// Simple root route to test server is running
+app.get('/', (req, res) => {
+  res.send('Hello World');
+});
+
+// MongoDB connection string (make sure password is URL encoded if needed)
 const mongoURI =
   'mongodb+srv://new-user70:Wildcat@cluster0.svlbt34.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0';
 
