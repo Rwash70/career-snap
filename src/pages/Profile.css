@@ -73,21 +73,21 @@
 }
 
 .profile-save-button {
-  background-color: #4caf50;
+  background-color: #81c784;
   margin-left: 75px;
 }
 
 .profile-save-button:hover {
-  background-color: #45a049;
+  background-color: #66bb6a;
 }
 
 .profile-cancel-button {
-  background-color: #f44336;
+  background-color: #e57373;
   margin-left: 16px;
 }
 
 .profile-cancel-button:hover {
-  background-color: #d7372b;
+  background-color: #ef5350;
 }
 
 .profile-edit-button {

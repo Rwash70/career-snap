@@ -11,6 +11,7 @@ export default function Profile() {
     email: 'JaneD@example.com',
     memberSince: '2024',
     receiveEmails: false,
+    preferences: '', // ✅ New field
   });
 
   const [formData, setFormData] = useState({ ...profileData });
@@ -25,7 +26,7 @@ export default function Profile() {
     if (type === 'radio') {
       setFormData((prev) => ({
         ...prev,
-        [name]: value === 'true', // convert string to boolean
+        [name]: value === 'true',
       }));
     } else {
       setFormData((prev) => ({
@@ -42,7 +43,7 @@ export default function Profile() {
       const response = await fetch(`${import.meta.env.VITE_API_URL}/profile`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        credentials: 'include', // <-- Added here to include cookies/auth headers
+        credentials: 'include',
         body: JSON.stringify(formData),
       });
 
@@ -123,6 +124,22 @@ export default function Profile() {
               </label>
             </div>
 
+            {/* ✅ New Preferences Dropdown */}
+            <p>
+              <strong>Work Preference:</strong>
+              <select
+                name='preferences'
+                value={formData.preferences}
+                onChange={handleChange}
+                className='preferences-dropdown'
+              >
+                <option value=''>-- Select --</option>
+                <option value='Full-time'>Full-time</option>
+                <option value='Part-time'>Part-time</option>
+                <option value='Hybrid'>Hybrid</option>
+              </select>
+            </p>
+
             <button
               className='profile-save-button'
               onClick={handleSave}
@@ -134,7 +151,7 @@ export default function Profile() {
               className='profile-cancel-button'
               onClick={() => {
                 setIsEditing(false);
-                setFormData(profileData); // Reset changes
+                setFormData(profileData);
                 setMessage('');
               }}
             >
@@ -155,6 +172,10 @@ export default function Profile() {
             <p>
               <strong>Receive emails about remote jobs:</strong>{' '}
               {profileData.receiveEmails ? 'Yes' : 'No'}
+            </p>
+            <p>
+              <strong>Work Preference:</strong>{' '}
+              {profileData.preferences || 'Not selected'}
             </p>
             <button className='profile-edit-button' onClick={handleEdit}>
               Edit
