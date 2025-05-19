@@ -107,7 +107,7 @@ function SignUp() {
         {loading ? 'Signing Up...' : 'Sign Up'}
       </button>
 
-      <p>
+      <p className='account-text'>
         Already have an account?{' '}
         <Link to='/signin' className='signin-link'>
           Sign In

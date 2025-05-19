@@ -19,6 +19,7 @@
   width: 100%;
   padding: 10px;
   margin-bottom: 20px;
+  margin-left: -12px;
   font-size: 14px;
   border: 1px solid #f5990b;
   border-radius: 4px;
@@ -51,10 +52,23 @@
   cursor: not-allowed;
 }
 
+.account-text {
+  text-align: center; /* or left/right as needed */
+  font-size: 16px; /* adjust as needed */
+  margin-right: 60px;
+  color: #333;
+}
+
 .signin-link {
   color: #f5990b;
+  text-decoration: none;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-weight: bold;
+  margin-left: 5px;
+}
+
+.signin-link:hover {
   text-decoration: underline;
-  cursor: pointer;
 }
 
 .error-message {
