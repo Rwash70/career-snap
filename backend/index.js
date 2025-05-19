@@ -1,25 +1,28 @@
 import express from 'express';
 import mongoose from 'mongoose';
 import cors from 'cors';
+import dotenv from 'dotenv';
+
+dotenv.config(); // Load environment variables
 
 const app = express();
 
+const corsOptions = {
+  origin: 'http://localhost:5173', // frontend URL
+  credentials: true, // allow cookies and auth headers
+};
+
 // CORS middleware: allow requests only from your frontend origin
-app.use(
-  cors({
-    origin: 'http://localhost:5173', // frontend URL
-    credentials: true, // allow cookies and auth headers
-  })
-);
+app.use(cors(corsOptions));
 
 // Handle OPTIONS preflight requests for all routes
-app.options(
-  '*',
-  cors({
-    origin: 'http://localhost:5173',
-    credentials: true,
-  })
-);
+app.options('*', cors(corsOptions));
+
+// Extra middleware: log every incoming request method and URL
+app.use((req, res, next) => {
+  console.log(`Received ${req.method} request for ${req.url}`);
+  next();
+});
 
 // Parse JSON bodies
 app.use(express.json());
@@ -29,9 +32,8 @@ app.get('/', (req, res) => {
   res.send('Hello World');
 });
 
-// MongoDB connection string (make sure password is URL encoded if needed)
-const mongoURI =
-  'mongodb+srv://new-user70:Wildcat@cluster0.svlbt34.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0';
+// MongoDB connection string using environment variable
+const mongoURI = process.env.MONGODB_URI;
 
 mongoose
   .connect(mongoURI, {

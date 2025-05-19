@@ -42,6 +42,7 @@ export default function Profile() {
       const response = await fetch(`${import.meta.env.VITE_API_URL}/profile`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
+        credentials: 'include', // <-- Added here to include cookies/auth headers
         body: JSON.stringify(formData),
       });
 
