@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { FaSignOutAlt } from 'react-icons/fa'; // Added for logout icon
 import './Profile.css';
 
 export default function Profile() {
@@ -152,6 +153,12 @@ export default function Profile() {
     }
   };
 
+  // --- Logout handler ---
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    navigate('/signin', { state: { message: 'You have been logged out.' } });
+  };
+
   return (
     <div className='profile-wrapper'>
       <h1 className='profile-title'>Your Profile</h1>
@@ -277,6 +284,12 @@ export default function Profile() {
         )}
         {message && <p className='profile-message'>{message}</p>}
       </div>
+
+      {/* LOGOUT BUTTON BELOW PROFILE CARD */}
+      <button className='logout-button' onClick={handleLogout}>
+        <FaSignOutAlt style={{ marginRight: '8px' }} />
+        Logout
+      </button>
     </div>
   );
 }

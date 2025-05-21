@@ -144,3 +144,22 @@
   min-width: 100px;
   text-align: center;
 }
+
+.logout-button {
+  margin-top: 20px;
+  margin-left: 295px;
+  padding: 10px 20px;
+  background-color: #f5990b; /* or your theme color */
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-weight: bold;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.logout-button:hover {
+  background-color: #d87c00;
+}

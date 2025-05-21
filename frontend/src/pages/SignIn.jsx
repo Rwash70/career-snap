@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import axios from 'axios';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate, useLocation, Link } from 'react-router-dom';
+import { ToastContainer, toast } from 'react-toastify'; // ✅ Import toast
+import 'react-toastify/dist/ReactToastify.css'; // ✅ Import styles
 import './SignIn.css';
 
 function SignIn() {
@@ -8,6 +10,9 @@ function SignIn() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const navigate = useNavigate();
+  const location = useLocation();
+
+  const redirectMessage = location.state?.message || '';
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -27,9 +32,13 @@ function SignIn() {
     try {
       const res = await axios.post('http://localhost:3002/signin', formData);
       localStorage.setItem('token', res.data.token);
-      alert('Signed in successfully!');
+
+      toast.success('Signed in successfully!'); // ✅ Replaces alert
       setFormData({ email: '', password: '' });
-      navigate('/profile');
+
+      setTimeout(() => {
+        navigate('/profile');
+      }, 1500); // slight delay to let toast show
     } catch (err) {
       setError(err.response?.data?.message || 'Sign in failed');
     } finally {
@@ -43,6 +52,7 @@ function SignIn() {
 
   return (
     <div className='signin-container'>
+      <ToastContainer /> {/* ✅ Toast render container */}
       <form onSubmit={handleSubmit} className='signin-form'>
         <button
           className='close-button-signin'
@@ -51,6 +61,10 @@ function SignIn() {
         >
           &times;
         </button>
+
+        {redirectMessage && (
+          <p className='redirect-message'>{redirectMessage}</p>
+        )}
 
         <label htmlFor='email' className='form-label'>
           Email
