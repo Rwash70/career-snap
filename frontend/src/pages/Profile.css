@@ -129,3 +129,18 @@
   flex: 1 1 30%;
   min-width: 220px;
 }
+
+.back-home-button {
+  padding: 6px 12px;
+  font-size: 14px;
+  margin-bottom: 20px;
+  margin-left: 0;
+  background-color: #f5990b;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  width: 15%;
+  min-width: 100px;
+  text-align: center;
+}

@@ -7,11 +7,13 @@
   background-color: #ffffff;
   border-radius: 12px;
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  position: relative;
 }
 
 .signin-form {
   display: flex;
   flex-direction: column;
+  position: relative;
 }
 
 .form-label {
@@ -54,7 +56,8 @@
 }
 
 .switch-form {
-  margin-top: 20px;
+  margin-top: -2px;
+  margin-right: 25px;
   text-align: center;
   font-size: 16px;
 }
@@ -69,4 +72,36 @@
 .signup-link:hover {
   text-decoration: underline;
   opacity: 0.5;
+}
+
+.close-button-signin {
+  position: absolute;
+  top: -52px;
+  margin-right: -41px;
+  right: 20px;
+  font-size: 24px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: #333;
+}
+
+.forgot-password-text {
+  margin-top: 16px;
+  font-size: 16px;
+  margin-right: 61px;
+  text-align: right;
+  color: #333333;
+}
+
+.forgot-password-link {
+  color: #f5990b;
+  font-weight: bold;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.forgot-password-link:hover {
+  text-decoration: underline;
+  opacity: 0.6;
 }

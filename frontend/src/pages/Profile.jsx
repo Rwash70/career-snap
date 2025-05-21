@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom'; // <-- import useNavigate
+import { useNavigate } from 'react-router-dom';
 import './Profile.css';
 
 export default function Profile() {
-  const navigate = useNavigate(); // <-- initialize navigate
+  const navigate = useNavigate();
 
   const [isEditing, setIsEditing] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -19,20 +19,74 @@ export default function Profile() {
 
   const [formData, setFormData] = useState({ ...profileData });
 
-  // Redirect to /signin if no token present
+  // Navigate back to home
+  const handleBackHome = () => {
+    navigate('/');
+  };
+
+  // Check for token and fetch profile data
   useEffect(() => {
     const token = localStorage.getItem('token');
-    console.log('Token in useEffect:', token); // <-- Added logging here for debug
+
+    // If no token, redirect to /signin with message
     if (!token) {
-      navigate('/signin');
+      navigate('/signin', {
+        state: { message: 'Please log in to view your profile.' },
+      });
+      return;
     }
+
+    // Fetch user profile data from the server
+    async function fetchProfile() {
+      try {
+        const res = await fetch(`${import.meta.env.VITE_API_URL}/profile`, {
+          method: 'GET',
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          credentials: 'include',
+        });
+
+        if (!res.ok) {
+          throw new Error('Failed to fetch profile');
+        }
+
+        const data = await res.json();
+
+        setProfileData({
+          name: data.name,
+          email: data.email,
+          memberSince: data.memberSince || '',
+          receiveEmails: data.receiveEmails || false,
+          preferences: data.preferences || '',
+        });
+
+        setFormData({
+          name: data.name,
+          email: data.email,
+          memberSince: data.memberSince || '',
+          receiveEmails: data.receiveEmails || false,
+          preferences: data.preferences || '',
+        });
+      } catch (error) {
+        console.error(error);
+        // Optional fallback redirect
+        navigate('/signin', {
+          state: { message: 'Session expired. Please log in again.' },
+        });
+      }
+    }
+
+    fetchProfile();
   }, [navigate]);
 
+  // Start editing profile
   const handleEdit = () => {
     setIsEditing(true);
     setMessage('');
   };
 
+  // Handle form input changes
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
     if (type === 'radio') {
@@ -48,16 +102,13 @@ export default function Profile() {
     }
   };
 
+  // Save updated profile info
   const handleSave = async () => {
     setLoading(true);
     setMessage('');
-
     const token = localStorage.getItem('token');
-    console.log('Sending form data:', formData);
-    console.log('Token:', token);
 
     try {
-      console.log('test');
       const response = await fetch(`${import.meta.env.VITE_API_URL}/profile`, {
         method: 'PUT',
         headers: {
@@ -65,13 +116,33 @@ export default function Profile() {
           'Content-Type': 'application/json',
         },
         credentials: 'include',
-        body: JSON.stringify(formData),
+        body: JSON.stringify({
+          memberSince: formData.memberSince,
+          preferences: formData.preferences,
+          receiveEmails: formData.receiveEmails,
+        }),
       });
 
       if (!response.ok) throw new Error('Failed to save profile');
 
-      const savedProfile = await response.json();
-      setProfileData(savedProfile);
+      const result = await response.json();
+
+      setProfileData({
+        name: profileData.name,
+        email: profileData.email,
+        memberSince: result.profile.memberSince,
+        receiveEmails: result.profile.receiveEmails,
+        preferences: result.profile.preferences,
+      });
+
+      setFormData({
+        name: profileData.name,
+        email: profileData.email,
+        memberSince: result.profile.memberSince,
+        receiveEmails: result.profile.receiveEmails,
+        preferences: result.profile.preferences,
+      });
+
       setIsEditing(false);
       setMessage('Profile saved successfully!');
     } catch (error) {
@@ -86,6 +157,10 @@ export default function Profile() {
       <h1 className='profile-title'>Your Profile</h1>
       <p className='profile-text'>Manage your account and settings here.</p>
 
+      <button className='back-home-button' onClick={handleBackHome}>
+        ← Back to Home
+      </button>
+
       <div className='profile-card'>
         {isEditing ? (
           <>
@@ -96,9 +171,9 @@ export default function Profile() {
                 name='name'
                 value={formData.name}
                 onChange={handleChange}
+                disabled
               />
             </p>
-
             <p>
               <strong>Email:</strong>
               <input
@@ -106,9 +181,9 @@ export default function Profile() {
                 name='email'
                 value={formData.email}
                 onChange={handleChange}
+                disabled
               />
             </p>
-
             <p>
               <strong>Member since:</strong>
               <input
@@ -118,7 +193,6 @@ export default function Profile() {
                 onChange={handleChange}
               />
             </p>
-
             <p>
               <strong>Receive emails about remote jobs:</strong>
             </p>
@@ -144,7 +218,6 @@ export default function Profile() {
                 No
               </label>
             </div>
-
             <p>
               <strong>Work Preference:</strong>
               <select
@@ -162,10 +235,7 @@ export default function Profile() {
 
             <button
               className='profile-save-button'
-              onClick={() => {
-                debugger;
-                handleSave();
-              }}
+              onClick={handleSave}
               disabled={loading}
             >
               {loading ? 'Saving...' : 'Save'}

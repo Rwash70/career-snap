@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import './Home.css';
 
 export default function Home() {
@@ -8,6 +9,11 @@ export default function Home() {
         <p className='intro-text'>
           Find and track job opportunities that fit your goals.
         </p>
+        <div className='home-auth-links'>
+          <Link to='/signin' className='btn-signin'>
+            Sign In
+          </Link>
+        </div>
       </div>
     </div>
   );

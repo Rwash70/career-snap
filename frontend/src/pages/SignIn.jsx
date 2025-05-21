@@ -1,20 +1,13 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import axios from 'axios';
 import { useNavigate, Link } from 'react-router-dom';
-import './SignIn.css'; // <-- Your CSS file
+import './SignIn.css';
 
 function SignIn() {
   const [formData, setFormData] = useState({ email: '', password: '' });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const navigate = useNavigate();
-
-  // useEffect(() => {
-  //   const token = localStorage.getItem('token');
-  //   if (token) {
-  //     navigate('/profile');
-  //   }
-  // }, [navigate]);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -44,9 +37,21 @@ function SignIn() {
     }
   };
 
+  const handleClose = () => {
+    navigate('/');
+  };
+
   return (
     <div className='signin-container'>
       <form onSubmit={handleSubmit} className='signin-form'>
+        <button
+          className='close-button-signin'
+          onClick={handleClose}
+          type='button'
+        >
+          &times;
+        </button>
+
         <label htmlFor='email' className='form-label'>
           Email
         </label>
@@ -80,21 +85,21 @@ function SignIn() {
         </button>
 
         {error && <p className='error-message'>{error}</p>}
+
+        <p className='forgot-password-text'>
+          Forgot your password?{' '}
+          <Link to='/reset-password' className='forgot-password-link'>
+            Reset Password
+          </Link>
+        </p>
+
+        <p className='switch-form'>
+          Don't have an account?{' '}
+          <Link to='/signup' className='signup-link'>
+            Sign Up
+          </Link>
+        </p>
       </form>
-
-      <p className='forgot-password-text'>
-        Forgot your password?{' '}
-        <Link to='/reset-password' className='forgot-password-link'>
-          Reset Password
-        </Link>
-      </p>
-
-      <p className='switch-form'>
-        Don't have an account?{' '}
-        <Link to='/signup' className='signup-link'>
-          Sign Up
-        </Link>
-      </p>
     </div>
   );
 }

@@ -1,14 +1,14 @@
-import { Navigate } from 'react-router-dom';
+import { Navigate, useLocation } from 'react-router-dom';
 
 function PrivateRoute({ children }) {
   const token = localStorage.getItem('token');
+  const location = useLocation();
 
   if (!token) {
-    // Not logged in, redirect to sign in
-    return <Navigate to='/signin' replace />;
+    // Redirect to signin, preserving the current page location in state
+    return <Navigate to='/signin' replace state={{ from: location }} />;
   }
 
-  // Logged in, allow access
   return children;
 }
 

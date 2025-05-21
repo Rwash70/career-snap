@@ -1,7 +1,12 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { FaBookmark, FaRegBookmark } from 'react-icons/fa'; // Import icons
 
-const JobSearch = ({ searchTerm, savedJobs = [], toggleSaveJob }) => {
+const JobSearch = ({
+  searchTerm,
+  savedJobs = [],
+  toggleSaveJob,
+  isLoggedIn,
+}) => {
   const [jobs, setJobs] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const jobsPerPage = 10;
@@ -45,7 +50,6 @@ const JobSearch = ({ searchTerm, savedJobs = [], toggleSaveJob }) => {
 
   return (
     <div className='job-search-container' ref={topRef}>
-      {' '}
       {/* ✅ scroll ref here */}
       <h1 className='job-search-title'>Remote Jobs</h1>
       {currentJobs.length > 0 ? (
@@ -67,6 +71,8 @@ const JobSearch = ({ searchTerm, savedJobs = [], toggleSaveJob }) => {
               }`}
               onClick={() => toggleSaveJob(job)}
               aria-label={isJobSaved(job) ? 'Unsave job' : 'Save job'}
+              disabled={!isLoggedIn} // Disable if NOT logged in
+              style={{ cursor: isLoggedIn ? 'pointer' : 'not-allowed' }}
             >
               {isJobSaved(job) ? (
                 <FaBookmark className='save-icon' />

@@ -53,7 +53,6 @@ function SignUp() {
         throw new Error(data.message || 'Sign up failed');
       }
 
-      //redirect to signin
       navigate('/signin');
     } catch (err) {
       setError(err.message || 'Sign up failed');
@@ -63,65 +62,71 @@ function SignUp() {
   };
 
   return (
-    <form onSubmit={handleSubmit} className='signup-form'>
-      <label htmlFor='name' className='form-label'>
-        Name
-      </label>
-      <input
-        id='name'
-        name='name'
-        value={formData.name}
-        onChange={handleChange}
-        placeholder='Name'
-        aria-label='Name'
-        required
-        className='form-input'
-      />
-
-      <label htmlFor='email' className='form-label'>
-        Email
-      </label>
-      <input
-        id='email'
-        name='email'
-        type='email'
-        value={formData.email}
-        onChange={handleChange}
-        placeholder='Email'
-        aria-label='Email address'
-        required
-        className='form-input'
-      />
-
-      <label htmlFor='password' className='form-label'>
-        Password
-      </label>
-      <input
-        id='password'
-        name='password'
-        type='password'
-        value={formData.password}
-        onChange={handleChange}
-        placeholder='Password'
-        aria-label='Password'
-        required
-        className='form-input'
-      />
-
-      <button type='submit' disabled={loading} className='submit-button'>
-        {loading ? 'Signing Up...' : 'Sign Up'}
+    <div className='signup-container'>
+      <button className='close-button-signup' onClick={() => navigate('/')}>
+        ×
       </button>
 
-      <p className='account-text'>
-        Already have an account?{' '}
-        <Link to='/signin' className='signin-link'>
-          Sign In
-        </Link>
-      </p>
+      <form onSubmit={handleSubmit} className='signup-form'>
+        <label htmlFor='name' className='form-label'>
+          Name
+        </label>
+        <input
+          id='name'
+          name='name'
+          value={formData.name}
+          onChange={handleChange}
+          placeholder='Name'
+          aria-label='Name'
+          required
+          className='form-input'
+        />
 
-      {error && <p className='error-message'>{error}</p>}
-      {success && <p className='success-message'>{success}</p>}
-    </form>
+        <label htmlFor='email' className='form-label'>
+          Email
+        </label>
+        <input
+          id='email'
+          name='email'
+          type='email'
+          value={formData.email}
+          onChange={handleChange}
+          placeholder='Email'
+          aria-label='Email address'
+          required
+          className='form-input'
+        />
+
+        <label htmlFor='password' className='form-label'>
+          Password
+        </label>
+        <input
+          id='password'
+          name='password'
+          type='password'
+          value={formData.password}
+          onChange={handleChange}
+          placeholder='Password'
+          aria-label='Password'
+          required
+          className='form-input'
+        />
+
+        <button type='submit' disabled={loading} className='submit-button'>
+          {loading ? 'Signing Up...' : 'Sign Up'}
+        </button>
+
+        <p className='account-text'>
+          Already have an account?{' '}
+          <Link to='/signin' className='signin-link'>
+            Sign In
+          </Link>
+        </p>
+
+        {error && <p className='error-message'>{error}</p>}
+        {success && <p className='success-message'>{success}</p>}
+      </form>
+    </div>
   );
 }
 
