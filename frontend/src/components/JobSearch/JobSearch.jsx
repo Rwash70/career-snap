@@ -20,7 +20,7 @@ const JobSearch = ({ searchTerm, savedJobs = [], toggleSaveJob }) => {
   }, [searchTerm]);
 
   useEffect(() => {
-    // ✅ scroll to top when currentPage changes
+    // scroll to top when currentPage changes
     if (topRef.current) {
       topRef.current.scrollIntoView({ behavior: 'smooth' });
     }

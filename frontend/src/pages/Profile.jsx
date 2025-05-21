@@ -1,7 +1,10 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom'; // <-- import useNavigate
 import './Profile.css';
 
 export default function Profile() {
+  const navigate = useNavigate(); // <-- initialize navigate
+
   const [isEditing, setIsEditing] = useState(false);
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState('');
@@ -11,10 +14,19 @@ export default function Profile() {
     email: 'JaneD@example.com',
     memberSince: '2024',
     receiveEmails: false,
-    preferences: '', // ✅ New field
+    preferences: '',
   });
 
   const [formData, setFormData] = useState({ ...profileData });
+
+  // Redirect to /signin if no token present
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    console.log('Token in useEffect:', token); // <-- Added logging here for debug
+    if (!token) {
+      navigate('/signin');
+    }
+  }, [navigate]);
 
   const handleEdit = () => {
     setIsEditing(true);
@@ -39,10 +51,19 @@ export default function Profile() {
   const handleSave = async () => {
     setLoading(true);
     setMessage('');
+
+    const token = localStorage.getItem('token');
+    console.log('Sending form data:', formData);
+    console.log('Token:', token);
+
     try {
+      console.log('test');
       const response = await fetch(`${import.meta.env.VITE_API_URL}/profile`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        method: 'PUT',
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
         credentials: 'include',
         body: JSON.stringify(formData),
       });
@@ -124,7 +145,6 @@ export default function Profile() {
               </label>
             </div>
 
-            {/* ✅ New Preferences Dropdown */}
             <p>
               <strong>Work Preference:</strong>
               <select
@@ -142,7 +162,10 @@ export default function Profile() {
 
             <button
               className='profile-save-button'
-              onClick={handleSave}
+              onClick={() => {
+                debugger;
+                handleSave();
+              }}
               disabled={loading}
             >
               {loading ? 'Saving...' : 'Save'}

@@ -1,9 +1,11 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 import './SignUp.css';
 
 function SignUp() {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -38,8 +40,7 @@ function SignUp() {
 
     setLoading(true);
     try {
-      //await axios.post('http://localhost:5000/signup', formData);
-      const res = await fetch('http://localhost:5000/signup', {
+      const res = await fetch('http://localhost:3002/signup', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -47,11 +48,15 @@ function SignUp() {
         body: JSON.stringify(formData),
       });
       const data = await res.json();
-      debugger;
-      setSuccess('Sign up successful! You can now sign in.');
-      setFormData({ name: '', email: '', password: '' });
+
+      if (!res.ok) {
+        throw new Error(data.message || 'Sign up failed');
+      }
+
+      //redirect to signin
+      navigate('/signin');
     } catch (err) {
-      setError(err.response?.data?.message || 'Sign up failed');
+      setError(err.message || 'Sign up failed');
     } finally {
       setLoading(false);
     }

@@ -18,6 +18,7 @@ import Saved from './pages/Saved';
 import Profile from './pages/Profile';
 import SignIn from './pages/SignIn';
 import SignUp from './pages/SignUp';
+import ResetPassword from './pages/ResetPassword';
 import Logout from './pages/Logout';
 
 function App() {
@@ -79,9 +80,16 @@ function App() {
             {/* Public auth routes */}
             <Route path='/signin' element={<SignIn />} />
             <Route path='/signup' element={<SignUp />} />
+            {/* Protected routes */}
+            <Route
+              path='/reset-password'
+              element={
+                <PrivateRoute>
+                  <ResetPassword />
+                </PrivateRoute>
+              }
+            />
             <Route path='/logout' element={<Logout />} />
-
-            {/* Protected profile route */}
             <Route
               path='/profile'
               element={

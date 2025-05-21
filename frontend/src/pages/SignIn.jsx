@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate, Link } from 'react-router-dom';
-import './SignIn.css'; // <-- Add this to import your CSS
+import './SignIn.css'; // <-- Your CSS file
 
 function SignIn() {
   const [formData, setFormData] = useState({ email: '', password: '' });
@@ -9,12 +9,12 @@ function SignIn() {
   const [error, setError] = useState('');
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const token = localStorage.getItem('token');
-    if (token) {
-      navigate('/profile');
-    }
-  }, [navigate]);
+  // useEffect(() => {
+  //   const token = localStorage.getItem('token');
+  //   if (token) {
+  //     navigate('/profile');
+  //   }
+  // }, [navigate]);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -32,7 +32,7 @@ function SignIn() {
 
     setLoading(true);
     try {
-      const res = await axios.post('http://localhost:5000/signin', formData);
+      const res = await axios.post('http://localhost:3002/signin', formData);
       localStorage.setItem('token', res.data.token);
       alert('Signed in successfully!');
       setFormData({ email: '', password: '' });
@@ -81,6 +81,13 @@ function SignIn() {
 
         {error && <p className='error-message'>{error}</p>}
       </form>
+
+      <p className='forgot-password-text'>
+        Forgot your password?{' '}
+        <Link to='/reset-password' className='forgot-password-link'>
+          Reset Password
+        </Link>
+      </p>
 
       <p className='switch-form'>
         Don't have an account?{' '}
