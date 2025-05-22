@@ -27,74 +27,83 @@ function App() {
   const [showMessage, setShowMessage] = useState(false);
   const [savedJobs, setSavedJobs] = useState([]);
 
-  const token = localStorage.getItem('token');
-
-  // Check token status
+  // Token sync
   useEffect(() => {
-    if (!token) {
-      setIsLoggedIn(false);
-    } else {
-      try {
-        setIsLoggedIn(true);
-      } catch (err) {
-        localStorage.removeItem('token');
-        setIsLoggedIn(false);
-      }
-    }
-  }, [token]);
+    const checkToken = () => {
+      const storedToken = localStorage.getItem('token');
+      setIsLoggedIn(!!storedToken);
+    };
+    checkToken();
+    window.addEventListener('storage', checkToken);
+    return () => window.removeEventListener('storage', checkToken);
+  }, []);
 
-  // Fetch saved jobs from backend
+  // Fetch saved jobs when logged in
   useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (!token) return;
+
     const fetchSavedJobs = async () => {
       try {
         const res = await fetch('http://localhost:3002/api/savedJobs/me', {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
+          headers: { Authorization: `Bearer ${token}` },
         });
         const data = await res.json();
-        if (data.savedJobs) {
-          setSavedJobs(data.savedJobs);
-        }
+        setSavedJobs(data || []);
       } catch (error) {
         console.error('Error fetching saved jobs:', error);
       }
     };
 
-    if (token) {
+    if (isLoggedIn) {
       fetchSavedJobs();
     }
-  }, [token]);
+  }, [isLoggedIn]);
 
-  // Save jobs to backend
-  useEffect(() => {
-    const saveJobsToBackend = async () => {
+  // ✅ Toggle saved job: POST if new, DELETE if existing
+  const toggleSaveJob = async (job) => {
+    const token = localStorage.getItem('token');
+    if (!token) return;
+
+    const isSaved = savedJobs.find((savedJob) => savedJob.url === job.url);
+
+    if (isSaved) {
+      // DELETE from backend
       try {
-        await fetch('http://localhost:3002/api/savedJobs', {
+        await fetch(`http://localhost:3002/api/savedJobs/${isSaved._id}`, {
+          method: 'DELETE',
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        setSavedJobs((prev) =>
+          prev.filter((savedJob) => savedJob._id !== isSaved._id)
+        );
+      } catch (error) {
+        console.error('Error deleting saved job:', error);
+      }
+    } else {
+      // POST to backend
+      try {
+        const res = await fetch('http://localhost:3002/api/savedJobs', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
             Authorization: `Bearer ${token}`,
           },
-          body: JSON.stringify({ savedJobs }),
+          body: JSON.stringify({
+            position: job.position,
+            company: job.company,
+            url: job.url,
+          }),
         });
+
+        const data = await res.json();
+        if (data.job) {
+          setSavedJobs((prev) => [...prev, data.job]);
+        }
       } catch (error) {
-        console.error('Error saving jobs:', error);
+        console.error('Error saving job:', error);
       }
-    };
-
-    if (token) {
-      saveJobsToBackend();
     }
-  }, [savedJobs, token]);
-
-  const toggleSaveJob = (job) => {
-    setSavedJobs((prevSavedJobs) => {
-      const isSaved = prevSavedJobs.find((savedJob) => savedJob.id === job.id);
-      return isSaved
-        ? prevSavedJobs.filter((savedJob) => savedJob.id !== job.id)
-        : [...prevSavedJobs, job];
-    });
   };
 
   useEffect(() => {
@@ -161,7 +170,13 @@ function App() {
 
             <Route
               path='/signin'
-              element={<SignIn setIsLoggedIn={setIsLoggedIn} />}
+              element={
+                isLoggedIn ? (
+                  <Navigate to='/' replace />
+                ) : (
+                  <SignIn setIsLoggedIn={setIsLoggedIn} />
+                )
+              }
             />
 
             <Route path='/signup' element={<SignUp />} />

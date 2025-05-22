@@ -7,8 +7,9 @@ function Logout({ setIsLoggedIn }) {
   const [messageVisible, setMessageVisible] = useState(false);
 
   useEffect(() => {
-    // Clear token and update login state
+    // Clear token, auth message, and update login state
     localStorage.removeItem('token');
+    sessionStorage.removeItem('authMessage'); // ✅ clear any stored auth message
     setIsLoggedIn(false);
     setMessageVisible(true);
 

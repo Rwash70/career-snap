@@ -46,7 +46,8 @@ const JobSearch = ({
     setCurrentPage(pageNumber);
   };
 
-  const isJobSaved = (job) => savedJobs.some((saved) => saved.id === job.id);
+  const isJobSaved = (job) =>
+    Array.isArray(savedJobs) && savedJobs.some((saved) => saved.id === job.id);
 
   return (
     <div className='job-search-container' ref={topRef}>

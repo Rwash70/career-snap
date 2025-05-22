@@ -5,7 +5,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import './SignIn.css';
 
-function SignIn({ setIsLoggedIn }) {
+function SignIn({ isLoggedIn, setIsLoggedIn }) {
   const [formData, setFormData] = useState({ email: '', password: '' });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
@@ -15,8 +15,14 @@ function SignIn({ setIsLoggedIn }) {
   const redirectMessage = location.state?.message || '';
 
   useEffect(() => {
-    localStorage.removeItem('token');
-  }, []);
+    // Redirect if already logged in
+    if (isLoggedIn) {
+      sessionStorage.setItem('redirectMessage', "You're already signed in.");
+      navigate('/');
+    }
+
+    // localStorage.removeItem('token');
+  }, [isLoggedIn, navigate]);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -34,16 +40,14 @@ function SignIn({ setIsLoggedIn }) {
 
     setLoading(true);
     try {
-      const res = await axios.post('http://localhost:3002/signin', formData);
-
-      // Store token and update auth state
+      const res = await axios.post(
+        'http://localhost:3002/api/auth/signin',
+        formData
+      );
       localStorage.setItem('token', res.data.token);
-
-      // Set default axios header for future requests
       axios.defaults.headers.common[
         'Authorization'
       ] = `Bearer ${res.data.token}`;
-
       setIsLoggedIn(true);
 
       toast.success('Signed in successfully!');

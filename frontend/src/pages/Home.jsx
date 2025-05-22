@@ -3,15 +3,15 @@ import { Link } from 'react-router-dom';
 import './Home.css';
 
 export default function Home({ isLoggedIn }) {
-  const [showMessage, setShowMessage] = useState(false);
+  const [showRedirectMessage, setShowRedirectMessage] = useState('');
 
   useEffect(() => {
-    if (isLoggedIn) {
-      setShowMessage(true);
-      const timer = setTimeout(() => setShowMessage(false), 5000);
-      return () => clearTimeout(timer);
+    const message = sessionStorage.getItem('redirectMessage');
+    if (message) {
+      setShowRedirectMessage(message);
+      sessionStorage.removeItem('redirectMessage');
     }
-  }, [isLoggedIn]);
+  }, []);
 
   return (
     <div className='home-container'>
@@ -24,10 +24,8 @@ export default function Home({ isLoggedIn }) {
           <Link to='/signin' className='btn-signin'>
             Sign In
           </Link>
-          {showMessage && (
-            <p className='already-signed-in-message'>
-              You are already signed in.
-            </p>
+          {showRedirectMessage && (
+            <p className='already-signed-in-message'>{showRedirectMessage}</p>
           )}
         </div>
       </div>
