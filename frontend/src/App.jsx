@@ -23,25 +23,77 @@ import Logout from './pages/Logout';
 
 function App() {
   const [loading, setLoading] = useState(true);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [showMessage, setShowMessage] = useState(false);
+  const [savedJobs, setSavedJobs] = useState([]);
 
-  // Saved jobs state
-  const [savedJobs, setSavedJobs] = useState(() => {
-    const saved = localStorage.getItem('savedJobs');
-    return saved ? JSON.parse(saved) : [];
-  });
+  const token = localStorage.getItem('token');
 
+  // Check token status
   useEffect(() => {
-    localStorage.setItem('savedJobs', JSON.stringify(savedJobs));
-  }, [savedJobs]);
+    if (!token) {
+      setIsLoggedIn(false);
+    } else {
+      try {
+        setIsLoggedIn(true);
+      } catch (err) {
+        localStorage.removeItem('token');
+        setIsLoggedIn(false);
+      }
+    }
+  }, [token]);
+
+  // Fetch saved jobs from backend
+  useEffect(() => {
+    const fetchSavedJobs = async () => {
+      try {
+        const res = await fetch('http://localhost:3002/api/savedJobs/me', {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        const data = await res.json();
+        if (data.savedJobs) {
+          setSavedJobs(data.savedJobs);
+        }
+      } catch (error) {
+        console.error('Error fetching saved jobs:', error);
+      }
+    };
+
+    if (token) {
+      fetchSavedJobs();
+    }
+  }, [token]);
+
+  // Save jobs to backend
+  useEffect(() => {
+    const saveJobsToBackend = async () => {
+      try {
+        await fetch('http://localhost:3002/api/savedJobs', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({ savedJobs }),
+        });
+      } catch (error) {
+        console.error('Error saving jobs:', error);
+      }
+    };
+
+    if (token) {
+      saveJobsToBackend();
+    }
+  }, [savedJobs, token]);
 
   const toggleSaveJob = (job) => {
     setSavedJobs((prevSavedJobs) => {
       const isSaved = prevSavedJobs.find((savedJob) => savedJob.id === job.id);
-      if (isSaved) {
-        return prevSavedJobs.filter((savedJob) => savedJob.id !== job.id);
-      } else {
-        return [...prevSavedJobs, job];
-      }
+      return isSaved
+        ? prevSavedJobs.filter((savedJob) => savedJob.id !== job.id)
+        : [...prevSavedJobs, job];
     });
   };
 
@@ -50,8 +102,27 @@ function App() {
     return () => clearTimeout(timer);
   }, []);
 
-  if (loading) {
-    return <Preloader />;
+  useEffect(() => {
+    if (showMessage) {
+      const timer = setTimeout(() => setShowMessage(false), 2500);
+      return () => clearTimeout(timer);
+    }
+  }, [showMessage]);
+
+  function SignInWithMessage() {
+    useEffect(() => {
+      setShowMessage(true);
+    }, []);
+    return (
+      <div>
+        {showMessage && (
+          <div className='already-signed-in-message'>
+            You are already signed in
+          </div>
+        )}
+        <Navigate to='/' replace />
+      </div>
+    );
   }
 
   return (
@@ -64,23 +135,37 @@ function App() {
 
         <main className='main-content'>
           <Routes>
-            <Route path='/' element={<Home />} />
+            <Route path='/' element={<Home isLoggedIn={isLoggedIn} />} />
+
             <Route
               path='/jobs'
               element={
-                <Jobs savedJobs={savedJobs} toggleSaveJob={toggleSaveJob} />
+                <Jobs
+                  savedJobs={savedJobs}
+                  toggleSaveJob={toggleSaveJob}
+                  isLoggedIn={isLoggedIn}
+                />
               }
             />
+
             <Route
               path='/saved'
               element={
-                <Saved savedJobs={savedJobs} toggleSaveJob={toggleSaveJob} />
+                <Saved
+                  savedJobs={savedJobs}
+                  toggleSaveJob={toggleSaveJob}
+                  isLoggedIn={isLoggedIn}
+                />
               }
             />
-            {/* Public auth routes */}
-            <Route path='/signin' element={<SignIn />} />
+
+            <Route
+              path='/signin'
+              element={<SignIn setIsLoggedIn={setIsLoggedIn} />}
+            />
+
             <Route path='/signup' element={<SignUp />} />
-            {/* Protected routes */}
+
             <Route
               path='/reset-password'
               element={
@@ -89,7 +174,14 @@ function App() {
                 </PrivateRoute>
               }
             />
-            <Route path='/logout' element={<Logout />} />
+
+            <Route path='/forgot-password' element={<ResetPassword />} />
+
+            <Route
+              path='/logout'
+              element={<Logout setIsLoggedIn={setIsLoggedIn} />}
+            />
+
             <Route
               path='/profile'
               element={
@@ -98,7 +190,7 @@ function App() {
                 </PrivateRoute>
               }
             />
-            {/* Redirect unknown routes to home */}
+
             <Route path='*' element={<Navigate to='/' />} />
           </Routes>
         </main>

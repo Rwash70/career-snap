@@ -1,11 +1,11 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate, useLocation, Link } from 'react-router-dom';
-import { ToastContainer, toast } from 'react-toastify'; // ✅ Import toast
-import 'react-toastify/dist/ReactToastify.css'; // ✅ Import styles
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import './SignIn.css';
 
-function SignIn() {
+function SignIn({ setIsLoggedIn }) {
   const [formData, setFormData] = useState({ email: '', password: '' });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
@@ -13,6 +13,10 @@ function SignIn() {
   const location = useLocation();
 
   const redirectMessage = location.state?.message || '';
+
+  useEffect(() => {
+    localStorage.removeItem('token');
+  }, []);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -31,14 +35,23 @@ function SignIn() {
     setLoading(true);
     try {
       const res = await axios.post('http://localhost:3002/signin', formData);
+
+      // Store token and update auth state
       localStorage.setItem('token', res.data.token);
 
-      toast.success('Signed in successfully!'); // ✅ Replaces alert
+      // Set default axios header for future requests
+      axios.defaults.headers.common[
+        'Authorization'
+      ] = `Bearer ${res.data.token}`;
+
+      setIsLoggedIn(true);
+
+      toast.success('Signed in successfully!');
       setFormData({ email: '', password: '' });
 
       setTimeout(() => {
         navigate('/profile');
-      }, 1500); // slight delay to let toast show
+      }, 1500);
     } catch (err) {
       setError(err.response?.data?.message || 'Sign in failed');
     } finally {
@@ -52,7 +65,7 @@ function SignIn() {
 
   return (
     <div className='signin-container'>
-      <ToastContainer /> {/* ✅ Toast render container */}
+      <ToastContainer />
       <form onSubmit={handleSubmit} className='signin-form'>
         <button
           className='close-button-signin'
@@ -99,13 +112,6 @@ function SignIn() {
         </button>
 
         {error && <p className='error-message'>{error}</p>}
-
-        <p className='forgot-password-text'>
-          Forgot your password?{' '}
-          <Link to='/reset-password' className='forgot-password-link'>
-            Reset Password
-          </Link>
-        </p>
 
         <p className='switch-form'>
           Don't have an account?{' '}

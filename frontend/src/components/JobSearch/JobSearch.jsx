@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { FaBookmark, FaRegBookmark } from 'react-icons/fa'; // Import icons
+import { FaBookmark, FaRegBookmark } from 'react-icons/fa';
 
 const JobSearch = ({
   searchTerm,
@@ -11,12 +11,12 @@ const JobSearch = ({
   const [currentPage, setCurrentPage] = useState(1);
   const jobsPerPage = 10;
 
-  const topRef = useRef(null); // ✅ ref for scrolling
+  const topRef = useRef(null);
 
   useEffect(() => {
     fetch('https://remoteok.com/api')
       .then((res) => res.json())
-      .then((data) => setJobs(data.slice(1))) // skip metadata
+      .then((data) => setJobs(data.slice(1)))
       .catch((err) => console.error(err));
   }, []);
 
@@ -50,7 +50,6 @@ const JobSearch = ({
 
   return (
     <div className='job-search-container' ref={topRef}>
-      {/* ✅ scroll ref here */}
       <h1 className='job-search-title'>Remote Jobs</h1>
       {currentJobs.length > 0 ? (
         currentJobs.map((job) => (

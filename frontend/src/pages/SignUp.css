@@ -54,9 +54,9 @@
 }
 
 .account-text {
-  text-align: center; /* or left/right as needed */
-  font-size: 16px; /* adjust as needed */
-  margin-right: 60px;
+  text-align: center;
+  font-size: 16px;
+  margin-right: 15px;
   color: #333;
 }
 

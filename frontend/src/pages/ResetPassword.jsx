@@ -6,10 +6,20 @@ const ResetPassword = () => {
   const [currentPassword, setCurrentPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [message, setMessage] = useState('');
+  const [error, setError] = useState('');
 
   const handleReset = async (e) => {
     e.preventDefault();
+    setMessage('');
+    setError('');
+
+    if (newPassword.length < 6) {
+      setError('New password must be at least 6 characters.');
+      return;
+    }
+
     try {
+      console.log('Token:', token);
       const token = localStorage.getItem('token');
       const res = await axios.post(
         'http://localhost:3002/reset-password',
@@ -21,8 +31,10 @@ const ResetPassword = () => {
         }
       );
       setMessage(res.data.message);
-    } catch (error) {
-      setMessage(error.response?.data?.message || 'Error resetting password');
+      setCurrentPassword('');
+      setNewPassword('');
+    } catch (err) {
+      setError(err.response?.data?.message || 'Error resetting password');
     }
   };
 
@@ -57,7 +69,8 @@ const ResetPassword = () => {
         </button>
       </form>
 
-      {message && <p className='reset-message'>{message}</p>}
+      {message && <p className='reset-message success'>{message}</p>}
+      {error && <p className='reset-message error'>{error}</p>}
     </div>
   );
 };

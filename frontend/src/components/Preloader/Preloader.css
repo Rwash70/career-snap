@@ -1,22 +1,22 @@
-/* src/components/Preloader/Preloader.css */
-
 .preloader {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: 100vh; /* full viewport height */
-  background-color: #fff; /* optional background */
+  height: 100%;
+  min-height: 100%;
+  background-color: #fff;
+  padding-top: 200px;
 }
 
 .spinner {
-  border: 4px solid #f3f3f3; /* Light grey */
-  border-top: 4px solid #f5990b; /* Accent color */
+  border: 4px solid #f3f3f3;
+  border-top: 4px solid #f5990b;
   border-radius: 50%;
   width: 40px;
   height: 40px;
   animation: spin 1s linear infinite;
-  margin-bottom: 1rem;
+  margin-bottom: 16px;
 }
 
 @keyframes spin {

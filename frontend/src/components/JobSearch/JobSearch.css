@@ -52,9 +52,8 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 0; /* Remove gap to test */
+  gap: 0;
   font-weight: 600;
-  /* Remove any default background or box shadow */
   background-image: none;
   box-shadow: none;
 }
@@ -66,6 +65,12 @@
   padding: 0 !important;
   margin: 0;
   display: block;
+}
+
+.job-card-save-icon-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  pointer-events: none;
 }
 
 .job-card-save-btn.saved {

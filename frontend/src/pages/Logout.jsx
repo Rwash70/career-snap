@@ -2,25 +2,28 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './Logout.css';
 
-function Logout() {
+function Logout({ setIsLoggedIn }) {
   const navigate = useNavigate();
   const [messageVisible, setMessageVisible] = useState(false);
 
   useEffect(() => {
+    // Clear token and update login state
     localStorage.removeItem('token');
+    setIsLoggedIn(false);
     setMessageVisible(true);
 
-    const timeout = setTimeout(() => {
+    // Redirect after 2 seconds
+    const timer = setTimeout(() => {
       navigate('/signin');
     }, 2000);
 
-    return () => clearTimeout(timeout);
-  }, [navigate]);
+    return () => clearTimeout(timer);
+  }, [navigate, setIsLoggedIn]);
 
   return (
     <div className='logout-container'>
       {messageVisible && (
-        <p className='logout-message'>You are now logged out.</p>
+        <p className='logout-message'>You have been logged out.</p>
       )}
     </div>
   );

@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { FaSignOutAlt } from 'react-icons/fa'; // Added for logout icon
+import { FaSignOutAlt } from 'react-icons/fa';
 import './Profile.css';
 
 export default function Profile() {
@@ -18,18 +18,15 @@ export default function Profile() {
     preferences: '',
   });
 
-  const [formData, setFormData] = useState({ ...profileData });
+  const [formData, setFormData] = useState(profileData);
 
-  // Navigate back to home
   const handleBackHome = () => {
     navigate('/');
   };
 
-  // Check for token and fetch profile data
   useEffect(() => {
     const token = localStorage.getItem('token');
 
-    // If no token, redirect to /signin with message
     if (!token) {
       navigate('/signin', {
         state: { message: 'Please log in to view your profile.' },
@@ -37,7 +34,6 @@ export default function Profile() {
       return;
     }
 
-    // Fetch user profile data from the server
     async function fetchProfile() {
       try {
         const res = await fetch(`${import.meta.env.VITE_API_URL}/profile`, {
@@ -54,24 +50,18 @@ export default function Profile() {
 
         const data = await res.json();
 
-        setProfileData({
-          name: data.name,
-          email: data.email,
-          memberSince: data.memberSince || '',
-          receiveEmails: data.receiveEmails || false,
-          preferences: data.preferences || '',
-        });
+        const updatedData = {
+          name: data?.name || '',
+          email: data?.email || '',
+          memberSince: data?.memberSince || '',
+          receiveEmails: data?.receiveEmails || false,
+          preferences: data?.preferences || '',
+        };
 
-        setFormData({
-          name: data.name,
-          email: data.email,
-          memberSince: data.memberSince || '',
-          receiveEmails: data.receiveEmails || false,
-          preferences: data.preferences || '',
-        });
+        setProfileData(updatedData);
+        setFormData(updatedData);
       } catch (error) {
         console.error(error);
-        // Optional fallback redirect
         navigate('/signin', {
           state: { message: 'Session expired. Please log in again.' },
         });
@@ -81,20 +71,15 @@ export default function Profile() {
     fetchProfile();
   }, [navigate]);
 
-  // Start editing profile
   const handleEdit = () => {
     setIsEditing(true);
     setMessage('');
   };
 
-  // Handle form input changes
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
     if (type === 'radio') {
-      setFormData((prev) => ({
-        ...prev,
-        [name]: value === 'true',
-      }));
+      setFormData((prev) => ({ ...prev, [name]: value === 'true' }));
     } else {
       setFormData((prev) => ({
         ...prev,
@@ -103,10 +88,23 @@ export default function Profile() {
     }
   };
 
-  // Save updated profile info
   const handleSave = async () => {
     setLoading(true);
     setMessage('');
+
+    // Frontend Validation
+    if (!/^\d{4}$/.test(formData.memberSince)) {
+      setMessage('Please enter a valid 4-digit year for "Member Since".');
+      setLoading(false);
+      return;
+    }
+
+    if (!formData.preferences) {
+      setMessage('Please select a work preference.');
+      setLoading(false);
+      return;
+    }
+
     const token = localStorage.getItem('token');
 
     try {
@@ -153,7 +151,6 @@ export default function Profile() {
     }
   };
 
-  // --- Logout handler ---
   const handleLogout = () => {
     localStorage.removeItem('token');
     navigate('/signin', { state: { message: 'You have been logged out.' } });
@@ -173,13 +170,7 @@ export default function Profile() {
           <>
             <p>
               <strong>Name:</strong>
-              <input
-                type='text'
-                name='name'
-                value={formData.name}
-                onChange={handleChange}
-                disabled
-              />
+              <input type='text' name='name' value={formData.name} disabled />
             </p>
             <p>
               <strong>Email:</strong>
@@ -187,7 +178,6 @@ export default function Profile() {
                 type='email'
                 name='email'
                 value={formData.email}
-                onChange={handleChange}
                 disabled
               />
             </p>
@@ -275,7 +265,9 @@ export default function Profile() {
             </p>
             <p>
               <strong>Work Preference:</strong>{' '}
-              {profileData.preferences || 'Not selected'}
+              <span className='preference-dropdown'>
+                {profileData.preferences || 'Not selected'}
+              </span>
             </p>
             <button className='profile-edit-button' onClick={handleEdit}>
               Edit
@@ -285,7 +277,6 @@ export default function Profile() {
         {message && <p className='profile-message'>{message}</p>}
       </div>
 
-      {/* LOGOUT BUTTON BELOW PROFILE CARD */}
       <button className='logout-button' onClick={handleLogout}>
         <FaSignOutAlt style={{ marginRight: '8px' }} />
         Logout

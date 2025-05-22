@@ -1,6 +1,6 @@
 import React from 'react';
 
-export default function Saved({ savedJobs, toggleSaveJob }) {
+export default function Saved({ savedJobs, toggleSaveJob, isLoggedIn }) {
   return (
     <div className='saved-jobs-container'>
       <h1 className='saved-jobs-title'>Saved Jobs</h1>
@@ -18,12 +18,14 @@ export default function Saved({ savedJobs, toggleSaveJob }) {
             >
               View Job
             </a>
-            <button
-              className='job-card-save-btn'
-              onClick={() => toggleSaveJob(job)}
-            >
-              Unsave
-            </button>
+            {isLoggedIn && (
+              <button
+                className='job-card-save-btn'
+                onClick={() => toggleSaveJob(job)}
+              >
+                Unsave
+              </button>
+            )}
           </div>
         ))
       ) : (
