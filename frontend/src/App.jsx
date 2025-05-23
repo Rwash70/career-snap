@@ -18,6 +18,7 @@ import Saved from './pages/Saved';
 import Profile from './pages/Profile';
 import SignIn from './pages/SignIn';
 import SignUp from './pages/SignUp';
+import ForgotPassword from './pages/ForgotPassword';
 import ResetPassword from './pages/ResetPassword';
 import Logout from './pages/Logout';
 
@@ -190,7 +191,7 @@ function App() {
               }
             />
 
-            <Route path='/forgot-password' element={<ResetPassword />} />
+            <Route path='/forgot-password' element={<ForgotPassword />} />
 
             <Route
               path='/logout'

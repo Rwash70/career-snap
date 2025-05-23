@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import { Link } from 'react-router-dom';
 import './ForgotPassword.css';
 
 const ForgotPassword = () => {
@@ -52,10 +53,16 @@ const ForgotPassword = () => {
           onChange={(e) => setEmail(e.target.value)}
           placeholder='Enter your email'
           required
+          autoComplete='username'
         />
         <button className='forgot-button' type='submit' disabled={loading}>
           {loading ? 'Sending...' : 'Send Reset Link'}
         </button>
+        <div className='forgot-footer'>
+          <Link to='/signin' className='forgot-link'>
+            Back to Sign In
+          </Link>
+        </div>
       </form>
 
       {message && <p className='forgot-message success'>{message}</p>}

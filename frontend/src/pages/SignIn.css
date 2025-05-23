@@ -31,6 +31,28 @@
   font-size: 16px;
 }
 
+.forgot-password {
+  margin-top: 10px;
+  margin-bottom: -10px;
+  text-align: right;
+  width: 100%;
+}
+
+.forgot-password-link {
+  font-size: 14px;
+  margin-right: 133px;
+  color: #f5990b;
+  text-decoration: none;
+  padding-right: 10px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.forgot-password-link:hover {
+  text-decoration: underline;
+  opacity: 0.7;
+}
+
 .submit-button {
   margin-top: 25px;
   padding: 12px;

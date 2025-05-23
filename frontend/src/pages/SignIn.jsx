@@ -95,6 +95,7 @@ function SignIn({ isLoggedIn, setIsLoggedIn }) {
           placeholder='Email'
           className='form-input'
           required
+          autoComplete='email'
         />
 
         <label htmlFor='password' className='form-label'>
@@ -109,11 +110,18 @@ function SignIn({ isLoggedIn, setIsLoggedIn }) {
           placeholder='Password'
           className='form-input'
           required
+          autoComplete='current-password'
         />
 
         <button type='submit' disabled={loading} className='submit-button'>
           {loading ? 'Signing In...' : 'Sign In'}
         </button>
+
+        <p className='forgot-password'>
+          <Link to='/forgot-password' className='forgot-password-link'>
+            Forgot Password?
+          </Link>
+        </p>
 
         {error && <p className='error-message'>{error}</p>}
 
