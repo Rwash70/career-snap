@@ -28,7 +28,6 @@ function App() {
   const [showMessage, setShowMessage] = useState(false);
   const [savedJobs, setSavedJobs] = useState([]);
 
-  // Token sync
   useEffect(() => {
     const checkToken = () => {
       const storedToken = localStorage.getItem('token');
@@ -39,7 +38,6 @@ function App() {
     return () => window.removeEventListener('storage', checkToken);
   }, []);
 
-  // Fetch saved jobs when logged in
   useEffect(() => {
     const token = localStorage.getItem('token');
     if (!token) return;
@@ -61,7 +59,6 @@ function App() {
     }
   }, [isLoggedIn]);
 
-  // ✅ Toggle saved job: POST if new, DELETE if existing
   const toggleSaveJob = async (job) => {
     const token = localStorage.getItem('token');
     if (!token) return;
@@ -69,7 +66,6 @@ function App() {
     const isSaved = savedJobs.find((savedJob) => savedJob.url === job.url);
 
     if (isSaved) {
-      // DELETE from backend
       try {
         await fetch(`http://localhost:3002/api/savedJobs/${isSaved._id}`, {
           method: 'DELETE',
@@ -82,7 +78,6 @@ function App() {
         console.error('Error deleting saved job:', error);
       }
     } else {
-      // POST to backend
       try {
         const res = await fetch('http://localhost:3002/api/savedJobs', {
           method: 'POST',
@@ -182,14 +177,9 @@ function App() {
 
             <Route path='/signup' element={<SignUp />} />
 
-            <Route
-              path='/reset-password'
-              element={
-                <PrivateRoute>
-                  <ResetPassword />
-                </PrivateRoute>
-              }
-            />
+            {/* Reset password is now public */}
+            <Route path='/reset-password/:token' element={<ResetPassword />} />
+            <Route path='/reset-password' element={<ResetPassword />} />
 
             <Route path='/forgot-password' element={<ForgotPassword />} />
 

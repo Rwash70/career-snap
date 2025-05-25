@@ -1,6 +1,8 @@
+// src/pages/ResetPassword.jsx
+
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import './ResetPassword.css';
 
 const ResetPassword = () => {
@@ -10,15 +12,7 @@ const ResetPassword = () => {
   const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate();
-  const location = useLocation();
-
-  // Helper to get query param 'token' from URL
-  const getTokenFromUrl = () => {
-    const params = new URLSearchParams(location.search);
-    return params.get('token');
-  };
-
-  const token = getTokenFromUrl();
+  const { token } = useParams(); // Token from URL
 
   useEffect(() => {
     if (!token) {
@@ -31,13 +25,8 @@ const ResetPassword = () => {
     setMessage('');
     setError('');
 
-    if (!token) {
-      setError('No reset token provided.');
-      return;
-    }
-
-    if (newPassword.length < 6) {
-      setError('New password must be at least 6 characters.');
+    if (!newPassword || newPassword.length < 6) {
+      setError('Password must be at least 6 characters.');
       return;
     }
 
@@ -45,13 +34,18 @@ const ResetPassword = () => {
 
     try {
       const res = await axios.post(
-        `${import.meta.env.VITE_API_URL}/reset-password`,
-        { newPassword, token }
+        `${import.meta.env.VITE_API_URL}/reset-password/${token}`,
+        { newPassword },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        }
       );
+
       setMessage(res.data.message || 'Password reset successful!');
       setNewPassword('');
 
-      // Optional: redirect to login after a delay
       setTimeout(() => {
         navigate('/signin');
       }, 3000);
@@ -66,15 +60,14 @@ const ResetPassword = () => {
     <div className='reset-container'>
       <h2 className='reset-title'>Reset Password</h2>
       <form className='reset-form' onSubmit={handleReset}>
-        {/* Hidden username/email field for accessibility */}
+        {/* Hidden email field for accessibility/autofill support */}
         <input
-          type='email'
+          type='text'
           name='email'
-          value='' // or your email if you have it
-          readOnly
-          hidden
           autoComplete='username'
-          tabIndex={-1}
+          value='reset-user'
+          hidden
+          readOnly
         />
 
         <div className='form-group'>

@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { FaBookmark, FaRegBookmark } from 'react-icons/fa';
+import JobCard from '../JobCard/JobCard';
 
 const JobSearch = ({
   searchTerm,
@@ -25,11 +25,23 @@ const JobSearch = ({
   }, [searchTerm]);
 
   useEffect(() => {
-    // scroll to top when currentPage changes
     if (topRef.current) {
       topRef.current.scrollIntoView({ behavior: 'smooth' });
     }
   }, [currentPage]);
+
+  // Helper to decode HTML entities and UTF-8 encoding
+  const decodeText = (text) => {
+    if (!text) return '';
+    try {
+      const utfDecoded = decodeURIComponent(escape(text));
+      const txt = document.createElement('textarea');
+      txt.innerHTML = utfDecoded;
+      return txt.value;
+    } catch {
+      return text;
+    }
+  };
 
   const filteredJobs = jobs.filter(
     (job) =>
@@ -54,37 +66,22 @@ const JobSearch = ({
       <h1 className='job-search-title'>Remote Jobs</h1>
       {currentJobs.length > 0 ? (
         currentJobs.map((job) => (
-          <div key={job.id} className='job-card'>
-            <h2 className='job-card-title'>{job.position}</h2>
-            <p className='job-card-company'>{job.company}</p>
-            <a
-              href={job.url}
-              target='_blank'
-              rel='noopener noreferrer'
-              className='job-card-link'
-            >
-              View Job
-            </a>
-            <button
-              className={`job-card-save-icon-btn ${
-                isJobSaved(job) ? 'saved' : ''
-              }`}
-              onClick={() => toggleSaveJob(job)}
-              aria-label={isJobSaved(job) ? 'Unsave job' : 'Save job'}
-              disabled={!isLoggedIn} // Disable if NOT logged in
-              style={{ cursor: isLoggedIn ? 'pointer' : 'not-allowed' }}
-            >
-              {isJobSaved(job) ? (
-                <FaBookmark className='save-icon' />
-              ) : (
-                <FaRegBookmark className='save-icon' />
-              )}
-            </button>
-          </div>
+          <JobCard
+            key={job.id}
+            title={decodeText(job.position)}
+            company={decodeText(job.company)}
+            location={job.location || 'Remote'}
+            description={job.description}
+            link={job.url}
+            isSaved={isJobSaved(job)}
+            toggleSaveJob={() => toggleSaveJob(job)}
+            isLoggedIn={isLoggedIn}
+          />
         ))
       ) : (
         <p className='no-jobs-message'>No jobs found.</p>
       )}
+
       <div className='pagination'>
         {[...Array(totalPages)].map((_, i) => (
           <button

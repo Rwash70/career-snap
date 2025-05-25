@@ -40,7 +40,7 @@ function SignUp() {
 
     setLoading(true);
     try {
-      const res = await fetch('http://localhost:3002/signup', {
+      const res = await fetch('http://localhost:3002/api/auth/signup', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -95,6 +95,7 @@ function SignUp() {
           aria-label='Email address'
           required
           className='form-input'
+          autoComplete='username'
         />
 
         <label htmlFor='password' className='form-label'>
@@ -110,6 +111,7 @@ function SignUp() {
           aria-label='Password'
           required
           className='form-input'
+          autoComplete='new-password'
         />
 
         <button type='submit' disabled={loading} className='submit-button'>
