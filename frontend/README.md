@@ -6,9 +6,9 @@ Career Snap is a full-stack web application that helps users track their profess
 
 -Frontend landing page served at (http://localhost:5173)
 
--Track job applications with status updates
+-Track saved job with status updates
 
--Filter and search job entries
+- Search job entries
 
 -Dashboard-style layout with user-friendly UI
 
@@ -39,14 +39,7 @@ Career Snap is a full-stack web application that helps users track their profess
 
 ## Backend API Overview
 
-**Base URL:** `http://localhost:3002/api`
-
-| Method | Endpoint    | Description              |
-| ------ | ----------- | ------------------------ |
-| GET    | `/jobs`     | Retrieve all job entries |
-| POST   | `/jobs`     | Create a new job entry   |
-| PUT    | `/jobs/:id` | Update a job entry       |
-| DELETE | `/jobs/:id` | Delete a job entry       |
+**Base URL:** `http://localhost:3002/api
 
 ## Additional Tools & Libraries
 
@@ -93,7 +86,7 @@ Career Snap is a full-stack web application that helps users track their profess
 ### Installation
 
 ```bash
-git clone https://github.com/yourusername/career-snap.git
+git clone https://github.com/Rwash70/career-snap.git
 cd career-snap
 npm install
 ```

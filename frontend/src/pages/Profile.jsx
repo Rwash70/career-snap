@@ -153,7 +153,8 @@ export default function Profile() {
 
   const handleLogout = () => {
     localStorage.removeItem('token');
-    navigate('/signin', { state: { message: 'You have been logged out.' } });
+    sessionStorage.clear(); // optional: clears any other session-related info
+    window.location.href = '/signin'; // forces full page reload to reset state
   };
 
   return (
@@ -277,7 +278,12 @@ export default function Profile() {
         {message && <p className='profile-message'>{message}</p>}
       </div>
 
-      <button className='logout-button' onClick={handleLogout}>
+      <button
+        className='logout-button'
+        onClick={() => {
+          handleLogout();
+        }}
+      >
         <FaSignOutAlt style={{ marginRight: '8px' }} />
         Logout
       </button>
