@@ -1,0 +1,91 @@
+.about-container {
+  width: 100%;
+  margin-top: 44px;
+  padding: 40px 5%;
+  background: linear-gradient(135deg, #f5990b 0%, #ffecd2 100%);
+  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+  color: #242424;
+  box-sizing: border-box;
+}
+
+.about-content {
+  max-width: 484px;
+  margin: 0 auto;
+}
+
+/* Main Header Section */
+.about-header {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.main-heading {
+  font-size: 36px;
+  margin-left: 6px;
+  margin-bottom: 20px;
+  color: #242424;
+}
+
+.intro-text {
+  font-size: 18px;
+  color: #444;
+  line-height: 1.6;
+  margin: 0 auto 24px auto; /* Center horizontally with bottom spacing */
+  text-align: center; /* Center the text */
+  max-width: 100%; /* Prevent overflow */
+  word-wrap: break-word; /* Break long words if necessary */
+}
+
+/* About Section Wrapper */
+.about-section {
+  margin-bottom: 40px;
+}
+
+/* Section Titles */
+.about-section__heading {
+  font-size: 24px;
+  font-weight: 700;
+  margin-bottom: 16px;
+  color: #242424;
+  border-bottom: 2px solid #f5990b;
+  padding-bottom: 8px;
+}
+
+/* Lists */
+.about-section__list {
+  list-style-type: disc;
+  padding-left: 20px;
+  margin-top: 10px;
+  color: #444;
+}
+
+.about-section__list-item {
+  font-size: 16px;
+  margin-bottom: 10px;
+  line-height: 1.5;
+}
+
+/* Note Styling */
+.about-section__note {
+  font-style: italic;
+  font-size: 16px;
+  color: #666;
+  margin-top: 10px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .main-heading {
+    font-size: 28px;
+  }
+
+  .about-section__heading {
+    font-size: 20px;
+  }
+
+  .intro-text,
+  .about-section__list-item,
+  .about-section__note {
+    font-size: 14px;
+  }
+}

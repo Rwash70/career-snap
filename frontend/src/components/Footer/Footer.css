@@ -7,3 +7,15 @@
   margin-top: 48px;
   font-size: 14px;
 }
+
+.footer-link a {
+  color: white;
+  text-decoration: underline;
+  font-weight: bold;
+  font-size: 14px;
+}
+
+.footer-link a:hover {
+  text-decoration: none;
+  color: #fff5e6;
+}

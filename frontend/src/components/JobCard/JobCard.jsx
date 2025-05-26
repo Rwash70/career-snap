@@ -2,14 +2,14 @@ import React, { useState } from 'react';
 import { FaBookmark, FaRegBookmark } from 'react-icons/fa';
 import './JobCard.css';
 
-// Helper to remove HTML tags
-function stripHTML(html) {
+const stripHTML = (html) => {
   const tempDiv = document.createElement('div');
   tempDiv.innerHTML = html;
   return tempDiv.textContent || tempDiv.innerText || '';
-}
+};
 
-function JobCard({
+const JobCard = ({
+  job, // <-- added full job object
   title,
   company,
   location,
@@ -18,7 +18,7 @@ function JobCard({
   isSaved,
   toggleSaveJob,
   isLoggedIn,
-}) {
+}) => {
   const [expanded, setExpanded] = useState(false);
   const maxLength = 300;
 
@@ -54,7 +54,7 @@ function JobCard({
       </a>
       <button
         className={`job-card-save-icon-btn ${isSaved ? 'saved' : ''}`}
-        onClick={toggleSaveJob}
+        onClick={() => toggleSaveJob(job)} // <-- pass the job here
         disabled={!isLoggedIn}
         style={{ cursor: isLoggedIn ? 'pointer' : 'not-allowed' }}
         aria-label={isSaved ? 'Unsave job' : 'Save job'}
@@ -67,6 +67,6 @@ function JobCard({
       </button>
     </div>
   );
-}
+};
 
 export default JobCard;

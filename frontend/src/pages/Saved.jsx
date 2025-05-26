@@ -7,7 +7,7 @@ export default function Saved({ savedJobs, toggleSaveJob, isLoggedIn }) {
 
       {savedJobs.length > 0 ? (
         savedJobs.map((job) => (
-          <div key={job.id} className='job-card'>
+          <div key={job.id || job.url} className='job-card'>
             <h2 className='job-card-title'>{job.position}</h2>
             <p className='job-card-company'>{job.company}</p>
             <a

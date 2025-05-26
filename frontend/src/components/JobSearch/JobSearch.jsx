@@ -16,8 +16,8 @@ const JobSearch = ({
   useEffect(() => {
     fetch('https://remoteok.com/api')
       .then((res) => res.json())
-      .then((data) => setJobs(data.slice(1)))
-      .catch((err) => console.error(err));
+      .then((data) => setJobs(data.slice(1))) // RemoteOK returns metadata in first item
+      .catch((err) => console.error('Error fetching jobs:', err));
   }, []);
 
   useEffect(() => {
@@ -30,7 +30,6 @@ const JobSearch = ({
     }
   }, [currentPage]);
 
-  // Helper to decode HTML entities and UTF-8 encoding
   const decodeText = (text) => {
     if (!text) return '';
     try {
@@ -58,12 +57,16 @@ const JobSearch = ({
     setCurrentPage(pageNumber);
   };
 
-  const isJobSaved = (job) =>
-    Array.isArray(savedJobs) && savedJobs.some((saved) => saved.id === job.id);
-
+  const isJobSaved = (job) => {
+    console.log(job, savedJobs);
+    return (
+      Array.isArray(savedJobs) && savedJobs.some((saved) => saved.id === job.id)
+    );
+  };
   return (
     <div className='job-search-container' ref={topRef}>
       <h1 className='job-search-title'>Remote Jobs</h1>
+
       {currentJobs.length > 0 ? (
         currentJobs.map((job) => (
           <JobCard
