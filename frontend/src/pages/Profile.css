@@ -8,15 +8,17 @@
 }
 
 .profile-title {
-  font-size: 28px;
+  font-size: 32px;
+  font-weight: 700;
   margin-bottom: 8px;
   margin-left: 123px;
 }
 
 .profile-text {
   font-size: 16px;
+  margin: 0;
   margin-bottom: 24px;
-  margin-left: 67px;
+  margin-left: 70px;
 }
 
 .profile-card {

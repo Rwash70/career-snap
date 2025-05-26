@@ -8,8 +8,15 @@ const stripHTML = (html) => {
   return tempDiv.textContent || tempDiv.innerText || '';
 };
 
+// Simple check to see if text is mostly English ASCII characters
+const isEnglish = (text) => {
+  const englishLetters = text.match(/[a-zA-Z]/g) || [];
+  const ratio = englishLetters.length / text.replace(/\s/g, '').length;
+  return ratio > 0.6;
+};
+
 const JobCard = ({
-  job, // <-- added full job object
+  job,
   title,
   company,
   location,
@@ -26,6 +33,13 @@ const JobCard = ({
   const isLong = cleanDescription.length > maxLength;
   const shortDescription = cleanDescription.slice(0, maxLength) + '...';
 
+  // Determine what description to display
+  const displayDescription = isEnglish(cleanDescription)
+    ? expanded || !isLong
+      ? cleanDescription
+      : shortDescription
+    : 'Description not available in English. Please visit the job link for details.';
+
   return (
     <div className='job-card'>
       <h3>{title}</h3>
@@ -33,8 +47,8 @@ const JobCard = ({
       <p>Location: {location}</p>
       {description && (
         <p className='job-description'>
-          {expanded || !isLong ? cleanDescription : shortDescription}
-          {isLong && (
+          {displayDescription}
+          {isEnglish(cleanDescription) && isLong && (
             <button
               className='read-more-button'
               onClick={() => setExpanded(!expanded)}

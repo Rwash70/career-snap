@@ -37,16 +37,17 @@ body {
   text-align: center;
 }
 
-.main-heading {
+.home-heading {
   font-size: 36px;
+  font-weight: 700;
   margin-bottom: 15px;
-  margin-left: -50px;
+  margin-right: 59px;
 }
 
-.intro-text {
+.home-intro-text {
   font-size: 18px;
   color: #666;
-  margin-left: -50px;
+  margin-right: 45px;
 }
 
 .btn-signin {

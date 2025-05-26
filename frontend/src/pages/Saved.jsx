@@ -1,9 +1,10 @@
 import React from 'react';
+import './Saved.css';
 
 export default function Saved({ savedJobs, toggleSaveJob, isLoggedIn }) {
   return (
     <div className='saved-jobs-container'>
-      <h1 className='saved-jobs-title'>Saved Jobs</h1>
+      <h1 className='saved-jobs__title'>Saved Jobs</h1>
 
       {savedJobs.length > 0 ? (
         savedJobs.map((job) => (
@@ -29,7 +30,7 @@ export default function Saved({ savedJobs, toggleSaveJob, isLoggedIn }) {
           </div>
         ))
       ) : (
-        <p>No saved jobs yet.</p>
+        <p className='saved-Jobs-text'> No saved jobs yet.</p>
       )}
     </div>
   );

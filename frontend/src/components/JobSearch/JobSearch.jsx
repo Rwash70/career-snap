@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
+import './JobSearch.css';
 import JobCard from '../JobCard/JobCard';
 
 const JobSearch = ({
@@ -74,7 +75,7 @@ const JobSearch = ({
             title={decodeText(job.position)}
             company={decodeText(job.company)}
             location={job.location || 'Remote'}
-            description={job.description}
+            description={decodeText(job.description)}
             link={job.url}
             isSaved={isJobSaved(job)}
             toggleSaveJob={() => toggleSaveJob(job)}

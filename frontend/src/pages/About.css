@@ -30,6 +30,7 @@
   font-size: 18px;
   color: #444;
   line-height: 1.6;
+  margin-right: 11px;
   margin: 0 auto 24px auto; /* Center horizontally with bottom spacing */
   text-align: center; /* Center the text */
   max-width: 100%; /* Prevent overflow */
