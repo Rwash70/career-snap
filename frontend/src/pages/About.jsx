@@ -3,8 +3,8 @@ import './About.css';
 
 const About = () => {
   return (
-    <div className='about-container'>
-      <div className='about-content'>
+    <main className='about-container'>
+      <article className='about-content'>
         <header className='about-header'>
           <h1 className='main-heading'>About CareerSnap</h1>
           <p className='intro-text'>
@@ -111,8 +111,8 @@ const About = () => {
             </li>
           </ul>
         </section>
-      </div>
-    </div>
+      </article>
+    </main>
   );
 };
 

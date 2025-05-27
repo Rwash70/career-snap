@@ -6,11 +6,13 @@
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
   color: #242424;
   box-sizing: border-box;
+  overflow-x: hidden; /* prevent horizontal scroll */
 }
 
 .about-content {
-  max-width: 484px;
+  max-width: 900px;
   margin: 0 auto;
+  padding: 0 10px;
 }
 
 .about-header {
@@ -20,7 +22,6 @@
 
 .main-heading {
   font-size: 36px;
-  margin-left: 6px;
   margin-bottom: 20px;
   color: #242424;
 }
@@ -29,11 +30,10 @@
   font-size: 18px;
   color: #444;
   line-height: 1.6;
-  margin-right: 11px;
-  margin: 0 auto 24px auto;
-  text-align: center;
   max-width: 100%;
   word-wrap: break-word;
+  margin: 0 auto 24px;
+  text-align: center;
 }
 
 .about-section {
@@ -69,7 +69,12 @@
   margin-top: 10px;
 }
 
+/* Responsive tweaks */
 @media (max-width: 768px) {
+  .about-container {
+    padding: 20px 5%;
+  }
+
   .main-heading {
     font-size: 28px;
   }

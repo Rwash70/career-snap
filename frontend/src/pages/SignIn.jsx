@@ -15,13 +15,10 @@ function SignIn({ isLoggedIn, setIsLoggedIn }) {
   const redirectMessage = location.state?.message || '';
 
   useEffect(() => {
-    // Redirect if already logged in
     if (isLoggedIn) {
       sessionStorage.setItem('redirectMessage', "You're already signed in.");
       navigate('/');
     }
-
-    // localStorage.removeItem('token');
   }, [isLoggedIn, navigate]);
 
   const handleChange = (e) => {

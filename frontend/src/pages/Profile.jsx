@@ -1,3 +1,4 @@
+// Profile.jsx
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FaSignOutAlt } from 'react-icons/fa';
@@ -20,54 +21,40 @@ export default function Profile() {
 
   const [formData, setFormData] = useState(profileData);
 
-  const handleBackHome = () => {
-    navigate('/');
-  };
+  const handleBackHome = () => navigate('/');
 
   useEffect(() => {
     const token = localStorage.getItem('token');
-
     if (!token) {
       navigate('/signin', {
         state: { message: 'Please log in to view your profile.' },
       });
       return;
     }
-
     async function fetchProfile() {
       try {
         const res = await fetch(`${import.meta.env.VITE_API_URL}/profile`, {
           method: 'GET',
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
+          headers: { Authorization: `Bearer ${token}` },
           credentials: 'include',
         });
-
-        if (!res.ok) {
-          throw new Error('Failed to fetch profile');
-        }
-
+        if (!res.ok) throw new Error('Failed to fetch profile');
         const data = await res.json();
-
-        const updatedData = {
-          name: data?.name || '',
-          email: data?.email || '',
-          memberSince: data?.memberSince || '',
-          receiveEmails: data?.receiveEmails || false,
-          preferences: data?.preferences || '',
+        const updated = {
+          name: data.name || '',
+          email: data.email || '',
+          memberSince: data.memberSince || '',
+          receiveEmails: data.receiveEmails || false,
+          preferences: data.preferences || '',
         };
-
-        setProfileData(updatedData);
-        setFormData(updatedData);
-      } catch (error) {
-        console.error(error);
+        setProfileData(updated);
+        setFormData(updated);
+      } catch {
         navigate('/signin', {
           state: { message: 'Session expired. Please log in again.' },
         });
       }
     }
-
     fetchProfile();
   }, [navigate]);
 
@@ -75,40 +62,34 @@ export default function Profile() {
     setIsEditing(true);
     setMessage('');
   };
-
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
-    if (type === 'radio') {
-      setFormData((prev) => ({ ...prev, [name]: value === 'true' }));
-    } else {
-      setFormData((prev) => ({
-        ...prev,
-        [name]: type === 'checkbox' ? checked : value,
-      }));
-    }
+    setFormData((prev) => ({
+      ...prev,
+      [name]:
+        type === 'checkbox'
+          ? checked
+          : type === 'radio'
+          ? value === 'true'
+          : value,
+    }));
   };
-
   const handleSave = async () => {
     setLoading(true);
     setMessage('');
-
-    // Frontend Validation
     if (!/^\d{4}$/.test(formData.memberSince)) {
-      setMessage('Please enter a valid 4-digit year for "Member Since".');
+      setMessage('Please enter a valid 4-digit year.');
       setLoading(false);
       return;
     }
-
     if (!formData.preferences) {
       setMessage('Please select a work preference.');
       setLoading(false);
       return;
     }
-
     const token = localStorage.getItem('token');
-
     try {
-      const response = await fetch(`${import.meta.env.VITE_API_URL}/profile`, {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/profile`, {
         method: 'PUT',
         headers: {
           Authorization: `Bearer ${token}`,
@@ -121,40 +102,28 @@ export default function Profile() {
           receiveEmails: formData.receiveEmails,
         }),
       });
-
-      if (!response.ok) throw new Error('Failed to save profile');
-
-      const result = await response.json();
-
-      setProfileData({
-        name: profileData.name,
-        email: profileData.email,
+      if (!res.ok) throw new Error('Failed to save profile');
+      const result = await res.json();
+      const updated = {
+        ...profileData,
         memberSince: result.profile.memberSince,
         receiveEmails: result.profile.receiveEmails,
         preferences: result.profile.preferences,
-      });
-
-      setFormData({
-        name: profileData.name,
-        email: profileData.email,
-        memberSince: result.profile.memberSince,
-        receiveEmails: result.profile.receiveEmails,
-        preferences: result.profile.preferences,
-      });
-
+      };
+      setProfileData(updated);
+      setFormData(updated);
       setIsEditing(false);
       setMessage('Profile saved successfully!');
-    } catch (error) {
-      setMessage(error.message || 'Error saving profile');
+    } catch (err) {
+      setMessage(err.message || 'Error saving profile');
     } finally {
       setLoading(false);
     }
   };
-
   const handleLogout = () => {
     localStorage.removeItem('token');
-    sessionStorage.clear(); // optional: clears any other session-related info
-    window.location.href = '/signin'; // forces full page reload to reset state
+    sessionStorage.clear();
+    window.location.href = '/signin';
   };
 
   return (
@@ -169,107 +138,83 @@ export default function Profile() {
       <div className='profile-card'>
         {isEditing ? (
           <>
-            <p>
-              <strong>Name:</strong>
-              <input type='text' name='name' value={formData.name} disabled />
-            </p>
-            <p>
-              <strong>Email:</strong>
-              <input
-                type='email'
-                name='email'
-                value={formData.email}
-                disabled
-              />
-            </p>
-            <p>
-              <strong>Member since:</strong>
-              <input
-                type='text'
-                name='memberSince'
-                value={formData.memberSince}
-                onChange={handleChange}
-              />
-            </p>
-            <p>
-              <strong>Receive emails about remote jobs:</strong>
-            </p>
-            <div className='radio-group'>
-              <label>
+            <div className='profile-fields-group'>
+              <div className='input-block'>
+                <label>Name:</label>
+                <input type='text' name='name' value={formData.name} disabled />
+              </div>
+              <div className='input-block'>
+                <label>Email:</label>
                 <input
-                  type='radio'
-                  name='receiveEmails'
-                  value='true'
-                  checked={formData.receiveEmails === true}
+                  type='email'
+                  name='email'
+                  value={formData.email}
+                  disabled
+                />
+              </div>
+              <div className='input-block'>
+                <label>Member Since:</label>
+                <input
+                  type='text'
+                  name='memberSince'
+                  value={formData.memberSince}
                   onChange={handleChange}
                 />
-                Yes
-              </label>
-              <label>
-                <input
-                  type='radio'
-                  name='receiveEmails'
-                  value='false'
-                  checked={formData.receiveEmails === false}
+              </div>
+              <div className='input-block'>
+                <label>Work Preference:</label>
+                <select
+                  name='preferences'
+                  value={formData.preferences}
                   onChange={handleChange}
-                />
-                No
-              </label>
+                  className='preferences-dropdown'
+                >
+                  <option value=''>-- Select --</option>
+                  <option value='Full-time'>Full-time</option>
+                  <option value='Part-time'>Part-time</option>
+                  <option value='Hybrid'>Hybrid</option>
+                </select>
+              </div>
             </div>
-            <p>
-              <strong>Work Preference:</strong>
-              <select
-                name='preferences'
-                value={formData.preferences}
-                onChange={handleChange}
-                className='preferences-dropdown'
-              >
-                <option value=''>-- Select --</option>
-                <option value='Full-time'>Full-time</option>
-                <option value='Part-time'>Part-time</option>
-                <option value='Hybrid'>Hybrid</option>
-              </select>
-            </p>
 
-            <button
-              className='profile-save-button'
-              onClick={handleSave}
-              disabled={loading}
-            >
-              {loading ? 'Saving...' : 'Save'}
-            </button>
-            <button
-              className='profile-cancel-button'
-              onClick={() => {
-                setIsEditing(false);
-                setFormData(profileData);
-                setMessage('');
-              }}
-            >
-              Cancel
-            </button>
+            <div className='button-group'>
+              <button
+                className='profile-save-button'
+                onClick={handleSave}
+                disabled={loading}
+              >
+                {loading ? 'Saving...' : 'Save'}
+              </button>
+              <button
+                className='profile-cancel-button'
+                onClick={() => {
+                  setIsEditing(false);
+                  setFormData(profileData);
+                  setMessage('');
+                }}
+              >
+                Cancel
+              </button>
+            </div>
           </>
         ) : (
           <>
-            <p>
-              <strong>Name:</strong> {profileData.name}
-            </p>
-            <p>
-              <strong>Email:</strong> {profileData.email}
-            </p>
-            <p>
-              <strong>Member since:</strong> {profileData.memberSince}
-            </p>
-            <p>
-              <strong>Receive emails about remote jobs:</strong>{' '}
-              {profileData.receiveEmails ? 'Yes' : 'No'}
-            </p>
-            <p>
-              <strong>Work Preference:</strong>{' '}
-              <span className='preference-dropdown'>
+            <div className='profile-fields-group'>
+              <div className='input-block'>
+                <label>Name:</label> {profileData.name}
+              </div>
+              <div className='input-block'>
+                <label>Email:</label> {profileData.email}
+              </div>
+              <div className='input-block'>
+                <label>Member Since:</label> {profileData.memberSince}
+              </div>
+              <div className='input-block'>
+                <label>Work Preference:</label>{' '}
                 {profileData.preferences || 'Not selected'}
-              </span>
-            </p>
+              </div>
+            </div>
+
             <button className='profile-edit-button' onClick={handleEdit}>
               Edit
             </button>
@@ -278,12 +223,7 @@ export default function Profile() {
         {message && <p className='profile-message'>{message}</p>}
       </div>
 
-      <button
-        className='logout-button'
-        onClick={() => {
-          handleLogout();
-        }}
-      >
+      <button className='logout-button' onClick={handleLogout}>
         <FaSignOutAlt style={{ marginRight: '8px' }} />
         Logout
       </button>

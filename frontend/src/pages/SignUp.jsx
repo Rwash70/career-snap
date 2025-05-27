@@ -62,73 +62,74 @@ function SignUp() {
   };
 
   return (
-    <div className='signup-container'>
-      <button className='close-button-signup' onClick={() => navigate('/')}>
-        ×
-      </button>
-
-      <form onSubmit={handleSubmit} className='signup-form'>
-        <label htmlFor='name' className='form-label'>
-          Name
-        </label>
-        <input
-          id='name'
-          name='name'
-          value={formData.name}
-          onChange={handleChange}
-          placeholder='Name'
-          aria-label='Name'
-          required
-          className='form-input'
-        />
-
-        <label htmlFor='email' className='form-label'>
-          Email
-        </label>
-        <input
-          id='email'
-          name='email'
-          type='email'
-          value={formData.email}
-          onChange={handleChange}
-          placeholder='Email'
-          aria-label='Email address'
-          required
-          className='form-input'
-          autoComplete='username'
-        />
-
-        <label htmlFor='password' className='form-label'>
-          Password
-        </label>
-        <input
-          id='password'
-          name='password'
-          type='password'
-          value={formData.password}
-          onChange={handleChange}
-          placeholder='Password'
-          aria-label='Password'
-          required
-          className='form-input'
-          autoComplete='new-password'
-        />
-
-        <button type='submit' disabled={loading} className='submit-button'>
-          {loading ? 'Signing Up...' : 'Sign Up'}
+    <main className='signup-main'>
+      <section className='signup-container'>
+        <button className='close-button-signup' onClick={() => navigate('/')}>
+          ×
         </button>
+        <form onSubmit={handleSubmit} className='signup-form'>
+          <label htmlFor='name' className='form-label'>
+            Name
+          </label>
+          <input
+            id='name'
+            name='name'
+            value={formData.name}
+            onChange={handleChange}
+            placeholder='Name'
+            aria-label='Name'
+            required
+            className='form-input'
+          />
 
-        <p className='account-text'>
-          Already have an account?{' '}
-          <Link to='/signin' className='signin-link'>
-            Sign In
-          </Link>
-        </p>
+          <label htmlFor='email' className='form-label'>
+            Email
+          </label>
+          <input
+            id='email'
+            name='email'
+            type='email'
+            value={formData.email}
+            onChange={handleChange}
+            placeholder='Email'
+            aria-label='Email address'
+            required
+            className='form-input'
+            autoComplete='username'
+          />
 
-        {error && <p className='error-message'>{error}</p>}
-        {success && <p className='success-message'>{success}</p>}
-      </form>
-    </div>
+          <label htmlFor='password' className='form-label'>
+            Password
+          </label>
+          <input
+            id='password'
+            name='password'
+            type='password'
+            value={formData.password}
+            onChange={handleChange}
+            placeholder='Password'
+            aria-label='Password'
+            required
+            className='form-input'
+            autoComplete='new-password'
+          />
+
+          <button type='submit' disabled={loading} className='submit-button'>
+            {loading ? 'Signing Up...' : 'Sign Up'}
+          </button>
+
+          <p className='account-text'>
+            Already have an account?{' '}
+            <Link to='/signin' className='signin-link'>
+              Sign In
+            </Link>
+          </p>
+
+          {error && <p className='error-message'>{error}</p>}
+          {success && <p className='success-message'>{success}</p>}
+        </form>
+      </section>
+    </main>
   );
 }
 

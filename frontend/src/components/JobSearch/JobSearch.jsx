@@ -11,14 +11,20 @@ const JobSearch = ({
   const [jobs, setJobs] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const jobsPerPage = 10;
-
   const topRef = useRef(null);
 
+  // ✅ Fetch all jobs once on initial render
   useEffect(() => {
-    fetch('https://remoteok.com/api')
-      .then((res) => res.json())
-      .then((data) => setJobs(data.slice(1))) // RemoteOK returns metadata in first item
-      .catch((err) => console.error('Error fetching jobs:', err));
+    const fetchJobs = async () => {
+      try {
+        const res = await fetch('https://remoteok.com/api');
+        const data = await res.json();
+        setJobs(data.slice(1)); // Remove metadata
+      } catch (err) {
+        console.error('Error fetching jobs:', err);
+      }
+    };
+    fetchJobs();
   }, []);
 
   useEffect(() => {
@@ -43,6 +49,7 @@ const JobSearch = ({
     }
   };
 
+  // ✅ Filter jobs by search term
   const filteredJobs = jobs.filter(
     (job) =>
       job.position?.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -59,11 +66,11 @@ const JobSearch = ({
   };
 
   const isJobSaved = (job) => {
-    console.log(job, savedJobs);
     return (
       Array.isArray(savedJobs) && savedJobs.some((saved) => saved.id === job.id)
     );
   };
+
   return (
     <div className='job-search-container' ref={topRef}>
       <h1 className='job-search-title'>Remote Jobs</h1>

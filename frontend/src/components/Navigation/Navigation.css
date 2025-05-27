@@ -6,6 +6,7 @@
 .nav-links {
   display: flex;
   gap: 40px;
+  justify-content: center;
 }
 
 .center-nav .nav-links {
