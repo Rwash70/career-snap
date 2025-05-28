@@ -38,7 +38,7 @@ Career Snap is a full-stack web application that helps users track their profess
 
 ## Backend API Overview
 
-**Base URL:** `http://localhost:3002/api
+**Base URL:** `http://localhost:3003/api
 
 ## Additional Tools & Libraries
 

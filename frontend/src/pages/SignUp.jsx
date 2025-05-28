@@ -7,7 +7,7 @@ import './SignUp.css';
 const BASE_URL =
   process.env.NODE_ENV === 'production'
     ? 'https://api.careersnap.l5.ca'
-    : 'http://localhost:3002';
+    : 'http://localhost:3003';
 
 function SignUp() {
   const navigate = useNavigate();

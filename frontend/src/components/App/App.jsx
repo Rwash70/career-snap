@@ -24,10 +24,14 @@ import ForgotPassword from '../../pages/ForgotPassword';
 import ResetPassword from '../../pages/ResetPassword';
 import Logout from '../../pages/Logout';
 
+// const BASE_URL = import.meta.env.VITE_API_URL;
+
+// const BASE_URL = 'https://api.careersnap.l5.ca';
+
 const BASE_URL =
   process.env.NODE_ENV === 'production'
     ? 'https://api.careersnap.l5.ca'
-    : 'http://localhost:3002';
+    : 'http://localhost:3003';
 
 function App() {
   const [loading, setLoading] = useState(true);
@@ -38,7 +42,7 @@ function App() {
   useEffect(() => {
     const checkToken = () => {
       const storedToken = localStorage.getItem('token');
-      setIsLoggedIn(!!storedToken);
+      //setIsLoggedIn(!!storedToken);
     };
     checkToken();
     window.addEventListener('storage', checkToken);
