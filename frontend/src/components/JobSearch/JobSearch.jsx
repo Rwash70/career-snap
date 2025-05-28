@@ -49,7 +49,7 @@ const JobSearch = ({
     }
   };
 
-  // ✅ Filter jobs by search term
+  // Filter jobs by search term
   const filteredJobs = jobs.filter(
     (job) =>
       job.position?.toLowerCase().includes(searchTerm.toLowerCase()) ||

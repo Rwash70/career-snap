@@ -42,7 +42,7 @@ function App() {
   useEffect(() => {
     const checkToken = () => {
       const storedToken = localStorage.getItem('token');
-      //setIsLoggedIn(!!storedToken);
+      setIsLoggedIn(!!storedToken);
     };
     checkToken();
     window.addEventListener('storage', checkToken);
