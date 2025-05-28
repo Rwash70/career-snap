@@ -67,7 +67,7 @@ Career Snap is a full-stack web application that helps users track their profess
 
 ## Live Demo
 
-[Insert your live app URL here]
+https://bejewelled-taffy-88ec6a.netlify.app/
 
 ## Features
 
