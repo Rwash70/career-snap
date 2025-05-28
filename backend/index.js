@@ -18,7 +18,7 @@ mongoose
 // Middleware
 app.use(express.json());
 
-var whitelist = ['http://localhost:5173', 'http://careersnap.l5.ca'];
+var whitelist = ['http://localhost:5173', 'https://careersnap.l5.ca'];
 var corsOptions = {
   origin: function (origin, callback) {
     if (whitelist.indexOf(origin) !== -1) {
