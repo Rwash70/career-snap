@@ -18,23 +18,19 @@ mongoose
 // Middleware
 app.use(express.json());
 
-var whitelist = ['http://localhost:5173', 'https://careersnap.l5.ca'];
-var corsOptions = {
+// Updated CORS config
+const whitelist = ['http://localhost:5173', 'https://careersnap.l5.ca'];
+const corsOptions = {
   origin: function (origin, callback) {
-    if (whitelist.indexOf(origin) !== -1) {
+    if (!origin || whitelist.indexOf(origin) !== -1) {
       callback(null, true);
     } else {
       callback(new Error('Not allowed by CORS'));
     }
   },
+  credentials: true, // This enables cookies/auth headers across origins
 };
-app.use(
-  cors(corsOptions)
-  // cors({
-  //   origin: 'http://localhost:5173', // Adjust to your frontend URL
-  //   credentials: true,
-  // })
-);
+app.use(cors(corsOptions));
 
 // Test route
 app.get('/', (req, res) => res.send('Hello World'));
@@ -43,10 +39,10 @@ app.get('/', (req, res) => res.send('Hello World'));
 app.use('/api/auth', authRoutes);
 app.use('/api/profile', profileRoutes);
 app.use('/api/savedJobs', savedJobsRoutes);
-
-// Mount resetPasswordRoutes under /api/auth/reset-password
-app.use('/api/auth/reset-password', resetPasswordRoutes);
+app.use('/api/auth/reset-password', resetPasswordRoutes); // Mount resetPasswordRoutes
 
 // Start server
-const PORT = process.env.PORT || 3002;
-app.listen(PORT);
+const PORT = process.env.PORT || 3003;
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
+});
