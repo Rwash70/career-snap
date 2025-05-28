@@ -32,7 +32,6 @@ Career Snap is a full-stack web application that helps users track their profess
 ### Development Tools
 
 - Axios
-- ESLint
 - dotenv
 - CORS
 - Nodemon
@@ -46,7 +45,6 @@ Career Snap is a full-stack web application that helps users track their profess
 - **Axios** – for frontend-backend HTTP communication
 - **React Router** – for smooth page navigation
 - **Mongoose** – for MongoDB data modeling
-- **ESLint** – for maintaining clean, consistent code
 
 ---
 
