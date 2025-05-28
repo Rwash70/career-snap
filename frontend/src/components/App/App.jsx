@@ -24,6 +24,11 @@ import ForgotPassword from '../../pages/ForgotPassword';
 import ResetPassword from '../../pages/ResetPassword';
 import Logout from '../../pages/Logout';
 
+const BASE_URL =
+  process.env.NODE_ENV === 'production'
+    ? 'https://api.careersnap.l5.ca'
+    : 'http://localhost:3002';
+
 function App() {
   const [loading, setLoading] = useState(true);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -46,7 +51,7 @@ function App() {
 
     const fetchSavedJobs = async () => {
       try {
-        const res = await fetch('http://localhost:3002/api/savedJobs/me', {
+        const res = await fetch(`${BASE_URL}/api/savedJobs/me`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         const data = await res.json();
@@ -69,7 +74,7 @@ function App() {
     const isSaved = savedJobs.find((savedJob) => savedJob.id === job.id);
     if (isSaved) {
       try {
-        await fetch(`http://localhost:3002/api/savedJobs/${isSaved._id}`, {
+        await fetch(`${BASE_URL}/api/savedJobs/${isSaved._id}`, {
           method: 'DELETE',
           headers: { Authorization: `Bearer ${token}` },
         });
@@ -81,7 +86,7 @@ function App() {
       }
     } else {
       try {
-        const res = await fetch('http://localhost:3002/api/savedJobs', {
+        const res = await fetch(`${BASE_URL}/api/savedJobs`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',

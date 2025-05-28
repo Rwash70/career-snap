@@ -17,11 +17,23 @@ mongoose
 
 // Middleware
 app.use(express.json());
+
+var whitelist = ['http://localhost:5173', 'http://careersnap.l5.ca'];
+var corsOptions = {
+  origin: function (origin, callback) {
+    if (whitelist.indexOf(origin) !== -1) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+};
 app.use(
-  cors({
-    origin: 'http://localhost:5173', // Adjust to your frontend URL
-    credentials: true,
-  })
+  cors(corsOptions)
+  // cors({
+  //   origin: 'http://localhost:5173', // Adjust to your frontend URL
+  //   credentials: true,
+  // })
 );
 
 // Test route

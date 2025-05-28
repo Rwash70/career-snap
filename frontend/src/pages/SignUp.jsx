@@ -4,6 +4,11 @@ import axios from 'axios';
 import { Link } from 'react-router-dom';
 import './SignUp.css';
 
+const BASE_URL =
+  process.env.NODE_ENV === 'production'
+    ? 'https://api.careersnap.l5.ca'
+    : 'http://localhost:3002';
+
 function SignUp() {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
@@ -40,7 +45,7 @@ function SignUp() {
 
     setLoading(true);
     try {
-      const res = await fetch('http://localhost:3002/api/auth/signup', {
+      const res = await fetch(`${BASE_URL}/api/auth/signup`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

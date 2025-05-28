@@ -5,6 +5,11 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import './SignIn.css';
 
+const BASE_URL =
+  process.env.NODE_ENV === 'production'
+    ? 'https://api.careersnap.l5.ca'
+    : 'http://localhost:3002';
+
 function SignIn({ isLoggedIn, setIsLoggedIn }) {
   const [formData, setFormData] = useState({ email: '', password: '' });
   const [loading, setLoading] = useState(false);
@@ -37,10 +42,7 @@ function SignIn({ isLoggedIn, setIsLoggedIn }) {
 
     setLoading(true);
     try {
-      const res = await axios.post(
-        'http://localhost:3002/api/auth/signin',
-        formData
-      );
+      const res = await axios.post(`${BASE_URL}/api/auth/signin`, formData);
       localStorage.setItem('token', res.data.token);
       axios.defaults.headers.common[
         'Authorization'
