@@ -7,6 +7,8 @@ body {
   background: linear-gradient(135deg, #f5990b 0%, #ffecd2 100%);
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
   color: #242424;
+  box-sizing: border-box;
+  overflow-x: hidden; /* Prevent horizontal scroll */
 }
 
 .home-container {
@@ -18,6 +20,7 @@ body {
   display: flex;
   gap: 20px;
   margin-bottom: 30px;
+  flex-wrap: wrap;
 }
 
 .nav-link {
@@ -33,27 +36,33 @@ body {
   pointer-events: none;
 }
 
-.home-content {
-  text-align: center;
+.home-container {
+  width: 100%;
+  padding: 40px 5%;
+  box-sizing: border-box;
+  text-align: center; /* center all direct text inside container */
 }
 
 .home-heading {
   font-size: 36px;
   font-weight: 700;
-  margin-bottom: 15px;
-  margin-right: 59px;
+  max-width: 600px;
+  margin: 0 auto 15px;
+  text-align: center; /* center the text inside */
 }
 
 .home-intro-text {
   font-size: 18px;
   color: #666;
-  margin-right: 45px;
+  max-width: 600px;
+  margin: 0 auto 20px;
+  text-align: center; /* center the text inside */
 }
 
 .btn-signin {
   display: inline-block;
   padding: 12px 24px;
-  margin-right: 63px;
+  margin-right: 12px;
   margin-top: 26px;
   background-color: #f5990b;
   color: white;
@@ -64,8 +73,55 @@ body {
   text-align: center;
   text-decoration: none;
   cursor: pointer;
+  transition: background-color 0.3s ease;
 }
 
 .btn-signin:hover {
   background-color: #d88309;
+}
+
+/* Tablet responsiveness */
+@media (max-width: 768px) {
+  .home-heading {
+    font-size: 28px;
+    margin-right: 0;
+  }
+
+  .home-intro-text {
+    font-size: 16px;
+    margin-right: 0;
+  }
+
+  .btn-signin {
+    margin-right: 0;
+    width: auto;
+    padding: 10px 20px;
+  }
+}
+
+/* Mobile responsiveness */
+@media (max-width: 480px) {
+  .home-container {
+    padding: 24px 4%;
+  }
+
+  .navigation-menu {
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .home-heading {
+    font-size: 24px;
+  }
+
+  .home-intro-text {
+    font-size: 14px;
+  }
+
+  .btn-signin {
+    width: 100%;
+    font-size: 14px;
+    padding: 10px;
+  }
 }

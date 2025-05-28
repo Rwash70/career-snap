@@ -109,6 +109,7 @@
   color: #fff;
   display: block;
   margin: 20px auto 0;
+  margin-top: 24px;
 }
 .profile-edit-button:hover {
   background-color: #d27d0a;
@@ -152,4 +153,52 @@
   font-size: 16px;
   color: #d9534f;
   font-weight: 700;
+}
+
+@media (max-width: 768px) {
+  .profile-wrapper {
+    padding: 20px;
+  }
+
+  .profile-title {
+    font-size: clamp(20px, 5vw, 28px);
+  }
+
+  .profile-text {
+    font-size: 14px;
+  }
+
+  .input-block {
+    flex: 1 1 100%;
+  }
+
+  .radio-group {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .button-group {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .logout-button {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .profile-title {
+    font-size: clamp(18px, 6vw, 24px);
+  }
+
+  .profile-save-button,
+  .profile-cancel-button,
+  .profile-edit-button,
+  .logout-button {
+    font-size: 14px;
+    padding: 10px 16px;
+  }
 }
