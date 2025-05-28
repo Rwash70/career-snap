@@ -6,7 +6,7 @@
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
   color: #242424;
   box-sizing: border-box;
-  overflow-x: hidden; /* prevent horizontal scroll */
+  overflow-x: hidden;
 }
 
 .about-content {

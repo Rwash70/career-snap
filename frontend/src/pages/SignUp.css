@@ -10,18 +10,16 @@
   box-sizing: border-box;
 }
 
-/* Signup form styling */
 .signup-form {
-  width: 100%; /* Use full width of container */
+  width: 100%;
   padding: 23px;
   border: 1px solid #f5990b;
   border-radius: 8px;
   background-color: #fffaf0;
   box-sizing: border-box;
-  margin: 0 auto; /* Correct syntax for centering */
+  margin: 0 auto;
 }
 
-/* Labels */
 .form-label {
   display: block;
   margin-bottom: 8px;
@@ -29,7 +27,6 @@
   color: #222222;
 }
 
-/* Input fields */
 .form-input {
   width: 100%;
   padding: 10px;
@@ -46,7 +43,6 @@
   outline: none;
 }
 
-/* Submit button */
 .submit-button {
   width: 100%;
   padding: 12px;
@@ -68,7 +64,6 @@
   cursor: not-allowed;
 }
 
-/* Account text below form */
 .account-text {
   text-align: center;
   font-size: 16px;
@@ -76,7 +71,6 @@
   margin-top: 10px;
 }
 
-/* Sign-in link */
 .signin-link {
   color: #f5990b;
   text-decoration: none;
@@ -89,7 +83,6 @@
   text-decoration: underline;
 }
 
-/* Error and success messages */
 .error-message {
   color: red;
   font-size: 14px;
@@ -102,7 +95,6 @@
   margin-top: 10px;
 }
 
-/* Close button */
 .close-button-signup {
   position: absolute;
   top: -30px;

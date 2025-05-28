@@ -13,7 +13,7 @@ const JobSearch = ({
   const jobsPerPage = 10;
   const topRef = useRef(null);
 
-  // ✅ Fetch all jobs once on initial render
+  // Fetch all jobs once on initial render
   useEffect(() => {
     const fetchJobs = async () => {
       try {

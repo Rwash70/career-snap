@@ -9,7 +9,7 @@ function Logout({ setIsLoggedIn }) {
   useEffect(() => {
     // Clear token, auth message, and update login state
     localStorage.removeItem('token');
-    sessionStorage.removeItem('authMessage'); // ✅ clear any stored auth message
+    sessionStorage.removeItem('authMessage');
     setIsLoggedIn(false);
     setMessageVisible(true);
 
