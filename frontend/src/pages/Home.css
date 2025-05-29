@@ -13,7 +13,11 @@ body {
 
 .home-container {
   width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
   padding: 40px 5%;
+  box-sizing: border-box;
+  text-align: center;
 }
 
 .navigation-menu {
@@ -28,19 +32,20 @@ body {
   color: #333;
   font-weight: 700;
   text-decoration: none;
+  border-bottom: 2px solid transparent;
+  padding-bottom: 4px;
+  transition: border-color 0.3s ease and ease-in-out;
+}
+
+.nav-link:hover {
+  border-bottom-color: #f5990b;
+  color: white;
 }
 
 .disabled-link {
   color: #ccc;
   cursor: not-allowed;
   pointer-events: none;
-}
-
-.home-container {
-  width: 100%;
-  padding: 40px 5%;
-  box-sizing: border-box;
-  text-align: center; /* center all direct text inside container */
 }
 
 .home-heading {
@@ -50,6 +55,8 @@ body {
   max-width: 600px;
   margin: 0 auto 15px;
   text-align: center;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .home-intro-text {
@@ -108,20 +115,68 @@ body {
   .navigation-menu {
     flex-direction: column;
     align-items: center;
-    gap: 16px;
+    justify-content: center;
+    gap: 12px;
+    width: 100%;
+  }
+
+  .nav-link {
+    font-size: 15px;
+    text-align: center;
+    width: 100%;
   }
 
   .home-heading {
-    font-size: 24px;
+    font-size: 22px;
+    line-height: 28px;
+    margin: 10px auto;
+    max-width: 90%;
   }
 
   .home-intro-text {
     font-size: 14px;
+    line-height: 20px;
+    margin: 10px auto 20px;
+    max-width: 90%;
   }
 
   .btn-signin {
     width: 100%;
     font-size: 14px;
     padding: 10px;
+    margin: 20px auto 0;
+  }
+}
+
+@media (max-width: 360px) {
+  .home-container {
+    padding: 16px 3%;
+  }
+
+  .home-heading {
+    font-size: 20px;
+    line-height: 1.2;
+  }
+
+  .home-intro-text {
+    font-size: 13px;
+    line-height: 1.4;
+  }
+
+  .btn-signin {
+    width: 100%;
+    font-size: 13px;
+    padding: 10px;
+    margin: 16px 0 0;
+  }
+
+  .navigation-menu {
+    flex-direction: column;
+    gap: 12px;
+    align-items: center;
+  }
+
+  .nav-link {
+    font-size: 14px;
   }
 }

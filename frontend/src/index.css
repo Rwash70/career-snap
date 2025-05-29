@@ -29,18 +29,12 @@ body {
   width: 100%;
   min-height: 100%;
   background-color: lightgrey;
+  overflow-x: hidden;
 }
 
 body {
-  height: 130%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-h1 {
-  font-size: 51px;
-  line-height: 55px;
+  height: auto;
+  display: block; /* Remove flex layout */
 }
 
 button {
