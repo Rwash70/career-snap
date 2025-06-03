@@ -82,15 +82,16 @@
 }
 
 .forgot-password {
-  text-align: right;
+  text-align: center;
   margin-bottom: 20px;
 }
 
 .forgot-password-link {
   color: #f5990b;
-  margin-right: 121px;
   text-decoration: none;
   font-weight: 600;
+
+  margin: 0;
 }
 
 .forgot-password-link:hover {

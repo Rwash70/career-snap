@@ -1,3 +1,9 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
 html,
 body {
   margin: 0;
@@ -16,8 +22,13 @@ body {
   max-width: 1200px;
   margin: 0 auto;
   padding: 40px 5%;
-  box-sizing: border-box;
   text-align: center;
+}
+
+.home-content {
+  width: 100%;
+  overflow-x: hidden;
+  padding: 0;
 }
 
 .navigation-menu {
@@ -34,7 +45,7 @@ body {
   text-decoration: none;
   border-bottom: 2px solid transparent;
   padding-bottom: 4px;
-  transition: border-color 0.3s ease and ease-in-out;
+  transition: border-color 0.3s ease-in-out;
 }
 
 .nav-link:hover {
@@ -55,8 +66,6 @@ body {
   max-width: 600px;
   margin: 0 auto 15px;
   text-align: center;
-  margin-left: auto;
-  margin-right: auto;
 }
 
 .home-intro-text {
@@ -92,12 +101,10 @@ body {
 @media (max-width: 768px) {
   .home-heading {
     font-size: 28px;
-    margin-right: 0;
   }
 
   .home-intro-text {
     font-size: 16px;
-    margin-right: 0;
   }
 
   .btn-signin {
@@ -124,6 +131,8 @@ body {
     font-size: 15px;
     text-align: center;
     width: 100%;
+    display: block;
+    word-break: break-word;
   }
 
   .home-heading {
@@ -178,5 +187,8 @@ body {
 
   .nav-link {
     font-size: 14px;
+    width: 100%;
+    display: block;
+    word-break: break-word;
   }
 }
