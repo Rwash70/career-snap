@@ -24,10 +24,6 @@ import ForgotPassword from '../../pages/ForgotPassword';
 import ResetPassword from '../../pages/ResetPassword';
 import Logout from '../../pages/Logout';
 
-// const BASE_URL = import.meta.env.VITE_API_URL;
-
-// const BASE_URL = 'https://api.careersnap.l5.ca';
-
 const BASE_URL =
   process.env.NODE_ENV === 'production'
     ? 'https://api.careersnap.l5.ca'
@@ -100,7 +96,7 @@ function App() {
             position: job.position,
             company: job.company,
             url: job.url,
-            id: job.id, // <-- added remote job id here
+            id: job.id,
           }),
         });
 
