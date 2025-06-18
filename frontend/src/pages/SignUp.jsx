@@ -126,7 +126,7 @@ function SignUp() {
           <p className='account-text'>
             Already have an account?{' '}
             <Link to='/signin' className='signin-link'>
-              Sign In
+              Sign&nbsp;In
             </Link>
           </p>
 
