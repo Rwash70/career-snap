@@ -68,6 +68,7 @@ Career Snap is a full-stack web application that helps users track their profess
 ## Live Demo
 
 http://careersnap.l5.ca
+
 https://bejewelled-taffy-88ec6a.netlify.app/
 
 # Repository
