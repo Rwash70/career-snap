@@ -6,10 +6,12 @@ function authenticateToken(req, res, next) {
 
   if (!token) return res.sendStatus(401); // Unauthorized
 
+  console.log(token);
   jwt.verify(
     token,
     process.env.JWT_SECRET || 'your_jwt_secret_key',
     (err, user) => {
+      console.log({ err, user });
       if (err) return res.sendStatus(403); // Forbidden
       req.user = user;
       next();

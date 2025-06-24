@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 import './ForgotPassword.css';
+import { BASE_URL } from '../utils/constants';
 
 const ForgotPassword = () => {
   const [email, setEmail] = useState('');
@@ -22,10 +23,9 @@ const ForgotPassword = () => {
     setLoading(true);
 
     try {
-      const res = await axios.post(
-        `${import.meta.env.VITE_API_URL}/forgot-password`,
-        { email }
-      );
+      const res = await axios.post(`${BASE_URL}/api/forgot-password`, {
+        email,
+      });
       setMessage(
         res.data.message ||
           'If your email is registered, you will receive reset instructions.'

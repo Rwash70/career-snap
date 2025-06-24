@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FaSignOutAlt } from 'react-icons/fa';
 import './Profile.css';
+import { BASE_URL } from '../utils/constants';
 
 export default function Profile() {
   const navigate = useNavigate();
@@ -33,7 +34,7 @@ export default function Profile() {
     }
     async function fetchProfile() {
       try {
-        const res = await fetch(`${import.meta.env.VITE_API_URL}/profile`, {
+        const res = await fetch(`${BASE_URL}/api/profile`, {
           method: 'GET',
           headers: { Authorization: `Bearer ${token}` },
           credentials: 'include',
@@ -89,7 +90,7 @@ export default function Profile() {
     }
     const token = localStorage.getItem('token');
     try {
-      const res = await fetch(`${import.meta.env.VITE_API_URL}/profile`, {
+      const res = await fetch(`${BASE_URL}/api/profile`, {
         method: 'PUT',
         headers: {
           Authorization: `Bearer ${token}`,

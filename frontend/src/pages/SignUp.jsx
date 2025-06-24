@@ -3,11 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 import './SignUp.css';
-
-const BASE_URL =
-  process.env.NODE_ENV === 'production'
-    ? 'https://api.careersnap.l5.ca'
-    : 'http://localhost:3003';
+import { BASE_URL } from '../utils/constants';
 
 function SignUp() {
   const navigate = useNavigate();

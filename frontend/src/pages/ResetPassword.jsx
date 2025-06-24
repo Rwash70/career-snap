@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useParams, useNavigate } from 'react-router-dom';
 import './ResetPassword.css';
+import { BASE_URL } from '../utils/constants';
 
 const ResetPassword = () => {
   const [newPassword, setNewPassword] = useState('');
@@ -34,7 +35,7 @@ const ResetPassword = () => {
 
     try {
       const res = await axios.post(
-        `${import.meta.env.VITE_API_URL}/reset-password/${token}`,
+        `${BASE_URL}/api/reset-password/${token}`,
         { newPassword },
         {
           headers: {

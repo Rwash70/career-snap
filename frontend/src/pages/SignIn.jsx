@@ -4,11 +4,7 @@ import { useNavigate, useLocation, Link } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import './SignIn.css';
-
-const BASE_URL =
-  process.env.NODE_ENV === 'production'
-    ? 'https://api.careersnap.l5.ca'
-    : 'http://localhost:3003';
+import { BASE_URL } from '../utils/constants';
 
 function SignIn({ isLoggedIn, setIsLoggedIn }) {
   const [formData, setFormData] = useState({ email: '', password: '' });

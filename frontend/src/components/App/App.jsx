@@ -23,11 +23,7 @@ import SignUp from '../../pages/SignUp';
 import ForgotPassword from '../../pages/ForgotPassword';
 import ResetPassword from '../../pages/ResetPassword';
 import Logout from '../../pages/Logout';
-
-const BASE_URL =
-  process.env.NODE_ENV === 'production'
-    ? 'https://api.careersnap.l5.ca'
-    : 'http://localhost:3003';
+import { BASE_URL } from '../../utils/constants';
 
 function App() {
   const [loading, setLoading] = useState(true);
@@ -35,15 +31,15 @@ function App() {
   const [showMessage, setShowMessage] = useState(false);
   const [savedJobs, setSavedJobs] = useState([]);
 
-  useEffect(() => {
-    const checkToken = () => {
-      const storedToken = localStorage.getItem('token');
-      setIsLoggedIn(!!storedToken);
-    };
-    checkToken();
-    window.addEventListener('storage', checkToken);
-    return () => window.removeEventListener('storage', checkToken);
-  }, []);
+  // useEffect(() => {
+  //   const checkToken = () => {
+  //     const storedToken = localStorage.getItem('token');
+  //     setIsLoggedIn(!!storedToken);
+  //   };
+  //   checkToken();
+  //   window.addEventListener('storage', checkToken);
+  //   return () => window.removeEventListener('storage', checkToken);
+  // }, []);
 
   useEffect(() => {
     const token = localStorage.getItem('token');
@@ -52,10 +48,15 @@ function App() {
     const fetchSavedJobs = async () => {
       try {
         const res = await fetch(`${BASE_URL}/api/savedJobs/me`, {
-          headers: { Authorization: `Bearer ${token}` },
+          credentials: 'include',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+          },
         });
         const data = await res.json();
         setSavedJobs(data || []);
+        setIsLoggedIn(true);
       } catch (error) {
         console.error('Error fetching saved jobs:', error);
       }
