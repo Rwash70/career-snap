@@ -31,16 +31,6 @@ function App() {
   const [showMessage, setShowMessage] = useState(false);
   const [savedJobs, setSavedJobs] = useState([]);
 
-  // useEffect(() => {
-  //   const checkToken = () => {
-  //     const storedToken = localStorage.getItem('token');
-  //     setIsLoggedIn(!!storedToken);
-  //   };
-  //   checkToken();
-  //   window.addEventListener('storage', checkToken);
-  //   return () => window.removeEventListener('storage', checkToken);
-  // }, []);
-
   useEffect(() => {
     const token = localStorage.getItem('token');
     if (!token) return;
