@@ -22,6 +22,7 @@ app.use(express.json());
 const whitelist = ['http://localhost:5173', 'https://careersnap.l5.ca'];
 const corsOptions = {
   origin: function (origin, callback) {
+    console.log(origin);
     if (!origin || whitelist.indexOf(origin) !== -1) {
       callback(null, true);
     } else {
@@ -39,7 +40,7 @@ app.get('/', (req, res) => res.send('Hello World'));
 app.use('/api/auth', authRoutes);
 app.use('/api/profile', profileRoutes);
 app.use('/api/savedJobs', savedJobsRoutes);
-app.use('/api/auth/reset-password', resetPasswordRoutes); // Mount resetPasswordRoutes
+app.use('/api/reset-password', resetPasswordRoutes); // Mount resetPasswordRoutes
 
 // Start server
 const PORT = process.env.PORT || 3003;
