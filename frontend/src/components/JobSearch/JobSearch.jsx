@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react';
 import './JobSearch.css';
 import JobCard from '../JobCard/JobCard';
+import { fetchJobs } from '../../api/jobsApi';
 
 const JobSearch = ({
   searchTerm = '',
@@ -15,34 +16,16 @@ const JobSearch = ({
   const jobsPerPage = 10;
   const topRef = useRef(null);
 
-  // Use this constant for any visible "test link" in production
-  const PROD_API = 'https://careersnap.l5.ca';
-
-  // Fetch all jobs once on initial render
+  // Load jobs whenever searchTerm changes (jobsApi handles filtering + defaults)
   useEffect(() => {
-    const fetchJobs = async () => {
+    const load = async () => {
       setStatus('loading');
       setErrorMsg('');
-
-      // In prod: ALWAYS use your public backend (no chance of :3003)
-      // In dev: use localhost unless VITE_API_URL overrides it
-      const url = import.meta.env.PROD
-        ? `${PROD_API}/api/jobs/remoteok`
-        : `${
-            import.meta.env.VITE_API_URL || 'http://localhost:3003'
-          }/api/jobs/remoteok`;
-
       try {
-        const res = await fetch(url, {
-          headers: { Accept: 'application/json' },
-          cache: 'no-store',
-        });
-        if (!res.ok) throw new Error(`HTTP ${res.status} @ ${url}`);
-
-        const data = await res.json();
-        const rows = Array.isArray(data) ? data.slice(1) : []; // remove metadata row
-        setJobs(rows);
+        const results = await fetchJobs(searchTerm);
+        setJobs(Array.isArray(results) ? results : []);
         setStatus('ready');
+        setCurrentPage(1);
       } catch (e) {
         console.error('Job fetch failed:', e);
         setStatus('error');
@@ -50,27 +33,8 @@ const JobSearch = ({
         setJobs([]);
       }
     };
-
-    fetchJobs();
-  }, []);
-
-  // Reset to page 1 whenever the search term changes
-  useEffect(() => {
-    setCurrentPage(1);
+    load();
   }, [searchTerm]);
-
-  // Keep current page within range when filtering changes totals
-  useEffect(() => {
-    const filteredCount = jobs.filter((job) => {
-      const q = (searchTerm || '').toLowerCase();
-      return (
-        job?.position?.toLowerCase().includes(q) ||
-        job?.company?.toLowerCase().includes(q)
-      );
-    }).length;
-    const maxPage = Math.max(1, Math.ceil(filteredCount / jobsPerPage));
-    if (currentPage > maxPage) setCurrentPage(maxPage);
-  }, [jobs, searchTerm, currentPage]);
 
   // Scroll to top on page change
   useEffect(() => {
@@ -92,22 +56,14 @@ const JobSearch = ({
     }
   };
 
-  // Filter jobs by search term
-  const filteredJobs = jobs.filter((job) => {
-    const q = (searchTerm || '').toLowerCase();
-    return (
-      job?.position?.toLowerCase().includes(q) ||
-      job?.company?.toLowerCase().includes(q)
-    );
-  });
-
-  // Pagination math
-  const totalPages = Math.max(1, Math.ceil(filteredJobs.length / jobsPerPage));
+  // Pagination math (jobs already filtered by jobsApi)
+  const totalPages = Math.max(1, Math.ceil(jobs.length / jobsPerPage));
   const indexOfLastJob = currentPage * jobsPerPage;
   const indexOfFirstJob = indexOfLastJob - jobsPerPage;
-  const currentJobs = filteredJobs.slice(indexOfFirstJob, indexOfLastJob);
+  const currentJobs = jobs.slice(indexOfFirstJob, indexOfLastJob);
 
   const handlePageChange = (pageNumber) => setCurrentPage(pageNumber);
+
   const isJobSaved = (job) =>
     Array.isArray(savedJobs) && savedJobs.some((saved) => saved.id === job.id);
 
@@ -138,18 +94,7 @@ const JobSearch = ({
       {status === 'loading' && <p>Loading jobs…</p>}
 
       {status === 'error' && (
-        <p className='no-jobs-message'>
-          Couldn’t load jobs: {errorMsg}
-          <br />
-          Test the backend directly:{' '}
-          <a
-            href={`${PROD_API}/api/jobs/remoteok`}
-            target='_blank'
-            rel='noreferrer'
-          >
-            {`${PROD_API}/api/jobs/remoteok`}
-          </a>
-        </p>
+        <p className='no-jobs-message'>Couldn’t load jobs: {errorMsg}</p>
       )}
 
       {status === 'ready' &&
