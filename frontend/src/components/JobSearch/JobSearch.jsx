@@ -24,20 +24,18 @@ const JobSearch = ({
       setStatus('loading');
       setErrorMsg('');
 
-      // In prod: ALWAYS use your public backend
+      // In prod: ALWAYS use your public backend (no chance of :3003)
       // In dev: use localhost unless VITE_API_URL overrides it
-      const API_BASE = import.meta.env.PROD
-        ? PROD_API
-        : import.meta.env.VITE_API_URL || 'http://localhost:3003';
-
-      const url = `${API_BASE}/api/jobs/remoteok`;
+      const url = import.meta.env.PROD
+        ? `${PROD_API}/api/jobs/remoteok`
+        : `${
+            import.meta.env.VITE_API_URL || 'http://localhost:3003'
+          }/api/jobs/remoteok`;
 
       try {
-        // Optional: uncomment to verify URL in console
-        // console.log('Fetching jobs from:', url);
-
         const res = await fetch(url, {
           headers: { Accept: 'application/json' },
+          cache: 'no-store',
         });
         if (!res.ok) throw new Error(`HTTP ${res.status} @ ${url}`);
 
