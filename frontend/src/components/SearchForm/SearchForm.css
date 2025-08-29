@@ -1,0 +1,22 @@
+.search-form {
+  display: flex;
+  justify-content: center;
+  margin: 20px 0;
+}
+
+.search-form input {
+  width: 100%;
+  max-width: 500px;
+  padding: 12px 20px;
+  font-size: 16px;
+  border: 2px solid #f5990b;
+  border-radius: 30px;
+  outline: none;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.05);
+}
+
+.search-form input:focus {
+  border-color: #f5990b;
+  box-shadow: 0px 0px 0px 4px rgba(245, 153, 11, 0.2);
+}

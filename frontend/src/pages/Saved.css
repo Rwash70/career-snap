@@ -1,0 +1,67 @@
+saved-jobs-container {
+  padding: 16px;
+  max-width: 90%;
+  margin: 0 auto;
+}
+
+.saved-jobs__title {
+  margin-bottom: 24px;
+  margin-left: 110px;
+  font-size: 47px;
+  font-weight: 700;
+  font-family: Arial, sans-serif;
+}
+
+.saved-Jobs-text {
+  margin-left: 160px;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 16px;
+  font-family: 700;
+}
+
+.job-card {
+  border: 1px solid #ddd;
+  padding: 16px;
+  margin-bottom: 16px;
+  border-radius: 6px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.job-card-title {
+  margin: 0 0 8px 0;
+}
+
+.job-card-company {
+  margin: 0 0 12px 0;
+  color: #555;
+}
+
+.job-card-link {
+  display: inline-block;
+  margin-bottom: 12px;
+  color: #0077cc;
+  text-decoration: none;
+}
+
+.job-card-link:hover {
+  text-decoration: underline;
+}
+
+.job-card-save-btn {
+  padding: 6px 12px;
+  background-color: #f5990b;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  width: 82px;
+  margin-left: 8px;
+  max-width: 100%;
+}
+
+.job-card-save-btn:hover {
+  background-color: #d87f00;
+}

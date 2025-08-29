@@ -1,0 +1,124 @@
+.signin-container {
+  position: relative;
+  width: 90%;
+  max-width: 400px;
+  margin: 40px auto 0;
+  padding: 30px;
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.signin-form {
+  width: 90%;
+  max-width: 400px;
+  margin: 0 auto;
+  padding: 23px;
+  border: 1px solid #f5990b;
+  border-radius: 8px;
+  background-color: #fffaf0;
+}
+
+.form-label {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 16px;
+  color: #222222;
+}
+
+.form-input {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 20px;
+  font-size: 14px;
+  border: 1px solid #f5990b;
+  border-radius: 4px;
+  background-color: #ffffff;
+}
+
+.form-input:focus {
+  border: 1px solid #d67c00;
+  outline: none;
+}
+
+.submit-button {
+  width: 100%;
+  padding: 12px;
+  font-size: 16px;
+  background-color: #f5990b;
+  color: #ffffff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 200ms ease-in-out;
+}
+
+.submit-button:hover {
+  background-color: #d67c00;
+}
+
+.submit-button:disabled {
+  background-color: #e0e0e0;
+  cursor: not-allowed;
+}
+
+.switch-form {
+  text-align: center;
+  font-size: 16px;
+  margin-top: 15px;
+  color: #333;
+}
+
+.signup-link {
+  color: #f5990b;
+  text-decoration: none;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-weight: bold;
+  margin-left: 5px;
+}
+
+.signup-link:hover {
+  text-decoration: underline;
+}
+
+.forgot-password {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.forgot-password-link {
+  color: #f5990b;
+  text-decoration: none;
+  font-weight: 600;
+
+  margin: 0;
+}
+
+.forgot-password-link:hover {
+  text-decoration: underline;
+}
+
+.error-message {
+  color: red;
+  font-size: 14px;
+  margin-top: 10px;
+}
+
+.redirect-message {
+  color: #d67c00;
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 12px;
+}
+
+.close-button-signin {
+  position: absolute;
+  top: -30px;
+  right: -7px;
+  font-size: 24px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: #333;
+  z-index: 1;
+}
