@@ -15,28 +15,32 @@ const JobSearch = ({
   const jobsPerPage = 10;
   const topRef = useRef(null);
 
+  // Use this constant for any visible "test link" in production
+  const PROD_API = 'https://careersnap.l5.ca';
+
   // Fetch all jobs once on initial render
   useEffect(() => {
     const fetchJobs = async () => {
       setStatus('loading');
       setErrorMsg('');
 
-      // PROD (Netlify) → Netlify Function (same-origin, no CORS)
-      // DEV → local Express backend
-      const isProd = import.meta.env.PROD;
-      const API_BASE =
-        import.meta.env.VITE_API_URL ||
-        (import.meta.env.PROD
-          ? 'https://careersnap.l5.ca'
-          : 'http://localhost:3003');
+      // In prod: ALWAYS use your public backend
+      // In dev: use localhost unless VITE_API_URL overrides it
+      const API_BASE = import.meta.env.PROD
+        ? PROD_API
+        : import.meta.env.VITE_API_URL || 'http://localhost:3003';
 
       const url = `${API_BASE}/api/jobs/remoteok`;
 
       try {
+        // Optional: uncomment to verify URL in console
+        // console.log('Fetching jobs from:', url);
+
         const res = await fetch(url, {
           headers: { Accept: 'application/json' },
         });
         if (!res.ok) throw new Error(`HTTP ${res.status} @ ${url}`);
+
         const data = await res.json();
         const rows = Array.isArray(data) ? data.slice(1) : []; // remove metadata row
         setJobs(rows);
@@ -134,10 +138,19 @@ const JobSearch = ({
       <h1 className='job-search-title'>Remote Jobs</h1>
 
       {status === 'loading' && <p>Loading jobs…</p>}
+
       {status === 'error' && (
         <p className='no-jobs-message'>
-          Couldn’t load jobs: {errorMsg}. Try reloading, or open{' '}
-          <a href='/.netlify/functions/jobs-remote'>this test link</a>.
+          Couldn’t load jobs: {errorMsg}
+          <br />
+          Test the backend directly:{' '}
+          <a
+            href={`${PROD_API}/api/jobs/remoteok`}
+            target='_blank'
+            rel='noreferrer'
+          >
+            {`${PROD_API}/api/jobs/remoteok`}
+          </a>
         </p>
       )}
 
