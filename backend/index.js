@@ -6,9 +6,13 @@ const cors = require('cors');
 const authRoutes = require('./routes/auth');
 const profileRoutes = require('./routes/profile');
 const savedJobsRoutes = require('./routes/savedJobs');
-const resetPasswordRoutes = require('./routes/resetPassword'); // Reset password routes
+const jobsRoutes = require('./routes/jobs'); // <-- jobs proxy/source
+const resetPasswordRoutes = require('./routes/resetPassword');
 
 const app = express();
+
+// If behind GCP load balancer / Nginx, trust the proxy (cookies, IPs, HTTPS)
+app.set('trust proxy', 1);
 
 // Connect to MongoDB
 mongoose
@@ -18,32 +22,34 @@ mongoose
 // Middleware
 app.use(express.json());
 
-// Updated CORS config
-const whitelist = ['http://localhost:5173', 'https://careersnap.l5.ca'];
+// CORS — allow your dev + production origins
+const whitelist = [
+  'http://localhost:5173',
+  'https://bejewelled-taffy-88ec6a.netlify.app',
+  'https://careersnap.l5.ca',
+];
 const corsOptions = {
-  origin: function (origin, callback) {
+  origin(origin, callback) {
     console.log(origin);
-    if (!origin || whitelist.indexOf(origin) !== -1) {
-      callback(null, true);
-    } else {
-      callback(new Error('Not allowed by CORS'));
-    }
+    if (!origin || whitelist.includes(origin)) callback(null, true);
+    else callback(new Error('Not allowed by CORS'));
   },
-  credentials: true, // This enables cookies/auth headers across origins
+  credentials: true,
 };
 app.use(cors(corsOptions));
 
-// Test route
-app.get('/', (req, res) => res.send('Hello World'));
+// Health check (useful on phone to confirm backend works)
+app.get('/api/health', (req, res) => res.json({ ok: true, ts: Date.now() }));
 
 // API routes
 app.use('/api/auth', authRoutes);
 app.use('/api/profile', profileRoutes);
 app.use('/api/savedJobs', savedJobsRoutes);
-app.use('/api/reset-password', resetPasswordRoutes); // Mount resetPasswordRoutes
+app.use('/api/jobs', jobsRoutes);
+app.use('/api/reset-password', resetPasswordRoutes);
 
-// Start server
+// Start server (bind 0.0.0.0 so a reverse proxy can reach it)
 const PORT = process.env.PORT || 3003;
-app.listen(PORT, () => {
+app.listen(PORT, '0.0.0.0', () => {
   console.log(`Server running on port ${PORT}`);
 });
